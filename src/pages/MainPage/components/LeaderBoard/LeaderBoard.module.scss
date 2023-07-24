@@ -1,0 +1,27 @@
+@use '~styles/variables' as *;
+@use '~styles/mixins' as *;
+
+.table-wrapper {
+    max-width: 740px;
+}
+
+
+.cell {
+    &-place {
+        width: 100px;
+    }
+
+    &-total-points {
+        text-align: end;
+        justify-content: end;
+        width: 50%;
+    }
+
+    &-number {
+        width: 50%;
+    }
+
+    &-summary {
+        background: theme-var($green-special-bright);
+    }
+}

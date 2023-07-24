@@ -1,0 +1,40 @@
+@use '~styles/variables' as *;
+@use '~styles/mixins' as *;
+
+.content {
+    display: flex;
+    // max-width: 1200px;
+    min-height: 695px;
+    background: theme-var($background-secondary);
+
+    @include lg {
+        padding: 0 20px;
+      }
+
+    @include wings;
+}
+
+.controls {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.control-button {
+  width: 200px;
+  font-size: 18px;
+  font-weight: 700;
+
+  &-red {
+    background: linear-gradient(270deg, #64FFDB 0%, #FF7979 0.01%);;
+  }
+}
+
+.rewards-wrapper {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px
+}
