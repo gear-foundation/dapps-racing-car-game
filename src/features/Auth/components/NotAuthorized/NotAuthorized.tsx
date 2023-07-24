@@ -3,6 +3,8 @@ import styles from './NotAuthorized.module.scss';
 import { cx } from '@/utils';
 
 function NotAuthorized() {
+  const testnetLink = process.env.REACT_APP_TESTNET_URL || '';
+
   return (
     <div className={cx(styles.container)}>
       <div className={cx(styles.content)}>
@@ -13,15 +15,15 @@ function NotAuthorized() {
             Testnet portal:
           </div>
         </div>
-        <a href="https://vara-network.io/" target="_blank" rel="noreferrer">
+        <a href={testnetLink} target="_blank" rel="noreferrer" className={cx(styles['testnet-link'])}>
           Vara Network Testnet
         </a>
         <div className={cx(styles.bottom)}>
-          More information can be found in our{' '}
+          More information can be found in our
           <Link to="https://discord.gg/x8ZeSy6S6K" target="_blank" className={styles.link}>
             Discord
-          </Link>{' '}
-          and{' '}
+          </Link>
+          and
           <Link to="https://t.me/VaraNetwork_Global" target="_blank" className={styles.link}>
             Telegram
           </Link>

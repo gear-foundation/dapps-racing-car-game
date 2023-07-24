@@ -15,12 +15,10 @@ import { useMediaQuery } from '@/hooks';
 import menuIcon from '@/assets/icons/burger-menu-icon.svg';
 import { BurgerMenu } from '../BurgerMenu/BurgerMenu';
 import { ScorePPV } from '../ScorePPV';
-import { useAuthSync } from '@/features/Auth/hooks';
 
 function Header({ menu }: HeaderProps) {
   const location = useLocation();
   const { account } = useAccount();
-  // const [isWalletModalOpen, setIsWalletModalOpen] = useState<boolean>(false);
   const address = useAtom(CONTRACT_ADDRESS_ATOM);
   const isMobile = useMediaQuery(600);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -35,13 +33,6 @@ function Header({ menu }: HeaderProps) {
     }
   }, [isMobile, isMobileMenuOpen]);
 
-  // const handleOpenWalletModal = () => {
-  //   setIsWalletModalOpen(true);
-  // };
-
-  // const handleCloseWalletModal = () => {
-  //   setIsWalletModalOpen(false);
-  // };
   return (
     <>
       <header className={cx(styles.header)}>
@@ -49,7 +40,7 @@ function Header({ menu }: HeaderProps) {
           <Link to="/">
             <img src={logo} alt="" />
           </Link>
-          {account ? (
+          {account && (
             <>
               {!isMobile && (
                 <>
@@ -79,24 +70,21 @@ function Header({ menu }: HeaderProps) {
                       <div className={cx(styles['balance-value'])}>{account.balance.value}</div>
                       <div className={cx(styles['balance-currency-name'])}>{account.balance.unit}</div>
                     </div>
-                    {/* <button className={cx(styles.description)} onClick={handleOpenWalletModal}> */}
-                    {address && (
-                      <Identicon
-                        value={ADDRESS.CONTRACT}
-                        size={21}
-                        theme="polkadot"
-                        className={cx(styles['description-icon'])}
-                      />
-                    )}
-                    <div className={cx(styles['description-name'])}>{account?.meta.name}</div>
-                    {/* </button> */}
+                    <button className={cx(styles.description)}>
+                      {address && (
+                        <Identicon
+                          value={ADDRESS.CONTRACT}
+                          size={21}
+                          theme="polkadot"
+                          className={cx(styles['description-icon'])}
+                        />
+                      )}
+                      <div className={cx(styles['description-name'])}>{account?.meta.name}</div>
+                    </button>
                   </div>
                 </>
               )}
             </>
-          ) : (
-            // <Button label="connect" variant="outline" onClick={handleOpenWalletModal} />
-            <Button label="" variant="text" />
           )}
           {account && isMobile && (
             <div className={cx(styles['burger-menu-button'])}>
@@ -111,8 +99,6 @@ function Header({ menu }: HeaderProps) {
           <BurgerMenu burgerMenuHandler={burgerMenuHandler} />
         </>
       )}
-
-      {/* {isWalletModalOpen && <WalletModal onClose={handleCloseWalletModal} />} */}
     </>
   );
 }
