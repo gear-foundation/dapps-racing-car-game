@@ -54,7 +54,7 @@ function Layout() {
 
     return null;
   };
-  console.log(currentGame?.cars);
+
   const defineRewards = (): string | null => {
     if (currentGame?.state === 'Finished') {
       if (defineWinStatus() === 'Win') {
