@@ -1,10 +1,15 @@
+import { useMemo } from 'react';
 import { useSendMessage } from '@gear-js/react-hooks';
 import { ADDRESS } from '@/consts';
 import { useMetadata } from '@/hooks';
 import metaTxt from '@/assets/meta/meta.txt';
 
 function useCreateStreamMetadata() {
-  return useMetadata(metaTxt);
+  const meta = useMetadata(metaTxt);
+
+  const memoizedMeta = useMemo(() => meta, [meta]);
+
+  return memoizedMeta;
 }
 
 function usePlayerMoveMessage() {
@@ -16,7 +21,9 @@ function usePlayerMoveMessage() {
 function useStartGameMessage() {
   const meta = useCreateStreamMetadata();
 
-  return useSendMessage(ADDRESS.CONTRACT, meta);
+  const message = useSendMessage(ADDRESS.CONTRACT, meta);
+
+  return { meta, message };
 }
 
 export { usePlayerMoveMessage, useStartGameMessage };

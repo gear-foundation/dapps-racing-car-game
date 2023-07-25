@@ -15,6 +15,7 @@ export interface Car {
   penalty: string;
   position: string;
   speed: string;
+  roundResult: Record<string, string> | null;
 }
 
 export interface Cars {
@@ -26,7 +27,7 @@ export interface GameState {
   carIds: string[];
   currentTurn: string;
   state: 'PlayerAction' | 'Finished';
-  winner: string;
+  result: 'Win' | 'Draw' | 'Lose';
   currentRound: string;
 }
 
@@ -38,9 +39,9 @@ export interface ConfigState {
   leaderboardContract: any;
   ftContract: any;
   nftMembershipGuard: any;
-  tokensOnFirstPlace: string;
-  tokensOnSecondPlace: string;
-  tokensOnThirdPlace: string;
+  tokensOnWin: string;
+  tokensOnDraw: string;
+  tokensOnLose: string;
 }
 
 export interface ProgramState {

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAtomValue } from 'jotai';
+import { useNavigate } from 'react-router';
+import { useAtom } from 'jotai';
 import { useAccount } from '@gear-js/react-hooks';
 import styles from './Layout.module.scss';
 import { cx } from '@/utils';
@@ -15,12 +16,13 @@ import { Loader } from '@/components';
 import { WinStatus } from './Layout.interface';
 
 function Layout() {
-  const currentGame = useAtomValue(CURRENT_GAME);
-  const gameConfig = useAtomValue(CONFIG);
+  const [currentGame] = useAtom(CURRENT_GAME);
+  const [gameConfig] = useAtom(CONFIG);
   const [isPlayerAction, setIsPlayerAction] = useState<boolean>(true);
   const { account } = useAccount();
+  const navigate = useNavigate();
   const sendPlayerMoveMessage = usePlayerMoveMessage();
-  const sendStartGameMessage = useStartGameMessage();
+  const { meta, message } = useStartGameMessage();
 
   const handleActionChoose = (type: 'accelerate' | 'shoot' | 'none') => {
     setIsPlayerAction(false);
@@ -40,54 +42,64 @@ function Layout() {
       },
       onError: () => {
         console.log('error');
+        setIsPlayerAction(true);
       },
     });
   };
 
   const defineWinStatus = (): WinStatus => {
     if (currentGame?.state === 'Finished') {
-      if (currentGame!.winner === account!.address) {
-        return 'win';
-      }
-
-      return 'lose';
+      return currentGame.result;
     }
 
     return null;
   };
-
+  console.log(currentGame?.cars);
   const defineRewards = (): string | null => {
-    if (defineWinStatus() === 'win') {
-      return gameConfig!.tokensOnFirstPlace;
-    }
-
-    if (defineWinStatus() === 'lose') {
-      return null;
+    if (currentGame?.state === 'Finished') {
+      if (defineWinStatus() === 'Win') {
+        return gameConfig!.tokensOnWin;
+      }
+      if (defineWinStatus() === 'Draw') {
+        return gameConfig!.tokensOnDraw;
+      }
+      if (defineWinStatus() === 'Lose') {
+        return gameConfig!.tokensOnLose;
+      }
     }
 
     return null;
   };
 
-  const handleStartNewGame = useCallback(() => {
-    const payload = {
-      StartGame: null,
-    };
+  const handleStartNewGame = useCallback(
+    (startManually?: boolean) => {
+      if (meta && (!currentGame || startManually)) {
+        setIsPlayerAction(false);
+        const payload = {
+          StartGame: null,
+        };
 
-    sendStartGameMessage(payload, {
-      onSuccess: () => {
-        window.location.reload();
-      },
-      onError: () => {
-        console.log('error');
-      },
-    });
-  }, [sendStartGameMessage]);
+        message(payload, {
+          onSuccess: () => {
+            if (startManually) {
+              window.location.reload();
+            }
+            setIsPlayerAction(true);
+          },
+          onError: () => {
+            console.log('error');
+            navigate('/play');
+          },
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [meta, currentGame],
+  );
 
   useEffect(() => {
-    if (!currentGame) {
-      handleStartNewGame();
-    }
-  }, [currentGame, handleStartNewGame]);
+    handleStartNewGame();
+  }, [handleStartNewGame]);
 
   return (
     <>
@@ -124,7 +136,12 @@ function Layout() {
           {currentGame.state === 'Finished' && (
             <div className={cx(styles['rewards-wrapper'])}>
               <YourRewards rewards={defineRewards()} />
-              <Button variant="primary" label="Play again" className={cx(styles.btn)} onClick={handleStartNewGame} />
+              <Button
+                variant="primary"
+                label="Play again"
+                className={cx(styles.btn)}
+                onClick={() => handleStartNewGame(true)}
+              />
             </div>
           )}
         </div>

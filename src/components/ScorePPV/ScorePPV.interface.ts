@@ -1,3 +1,3 @@
 export interface ScorePPVProps {
-  children: string;
+  children?: string;
 }

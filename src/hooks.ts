@@ -115,4 +115,17 @@ function useProgramState() {
   return state;
 }
 
-export { useProgramMetadata, useContractAddressSetup, useClickOutside, useMetadata, useMediaQuery, useProgramState };
+function useReadState<T>({ programId, meta }: { programId?: HexString; meta: string }) {
+  const metadata = useProgramMetadata(meta);
+  return useReadFullState<T>(programId, metadata);
+}
+
+export {
+  useProgramMetadata,
+  useContractAddressSetup,
+  useClickOutside,
+  useMetadata,
+  useMediaQuery,
+  useProgramState,
+  useReadState,
+};

@@ -2,4 +2,4 @@ export interface LayoutProps {
   currentTurn: string;
 }
 
-export type WinStatus = 'win' | 'lose' | 'draw' | null;
+export type WinStatus = 'Win' | 'Lose' | 'Draw' | null;

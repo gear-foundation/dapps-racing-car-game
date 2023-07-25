@@ -4,5 +4,5 @@ interface Menu {
   };
 }
 export interface HeaderProps {
-  menu: Menu;
+  menu?: Menu;
 }

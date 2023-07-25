@@ -45,25 +45,26 @@ function Header({ menu }: HeaderProps) {
               {!isMobile && (
                 <>
                   <nav className={cx(styles.menu)}>
-                    {Object.keys(menu).map((item) => {
-                      const { url } = menu[item];
+                    {menu &&
+                      Object.keys(menu).map((item) => {
+                        const { url } = menu[item];
 
-                      return (
-                        <Link to={url} key={item}>
-                          <p
-                            className={cx(
-                              styles['menu-item'],
-                              location.pathname === `/${url}` ? styles['menu-item--active'] : '',
-                            )}>
-                            {item}
-                          </p>
-                        </Link>
-                      );
-                    })}
+                        return (
+                          <Link to={url} key={item}>
+                            <p
+                              className={cx(
+                                styles['menu-item'],
+                                location.pathname === `/${url}` ? styles['menu-item--active'] : '',
+                              )}>
+                              {item}
+                            </p>
+                          </Link>
+                        );
+                      })}
                   </nav>
                   <div className={cx(styles['wallet-info'])}>
                     <div className={cx(styles.score)}>
-                      <ScorePPV>300</ScorePPV>
+                      <ScorePPV />
                     </div>
                     <div className={cx(styles.balance)}>
                       <img src={coin} alt="wara coin" className={cx(styles['balance-coin-image'])} />

@@ -7,16 +7,16 @@ import { GamePage, MainPage } from '@/pages';
 import { Header, Footer } from '@/components';
 import { withProviders } from '@/hocs';
 import { ScrollToTop, cx } from '@/utils';
-import { LEADERBOARD, LOGIN, NOT_AUTHORIZED, PLAY, START, routes } from '@/App.routes';
+import { LOGIN, NOT_AUTHORIZED, PLAY, START } from '@/App.routes';
 import { Loader } from './components/Loader';
 import styles from './App.module.scss';
 import 'babel-polyfill';
 import { useProgramState } from './hooks';
-import { LeaderBoard } from './pages/MainPage/components/LeaderBoard';
 import { IntrodutionPic } from './pages/MainPage/components/IntrodutionPic';
 import { CONFIG, CURRENT_GAME, MSG_TO_GAME_ID, STRATEGY_IDS } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
 import { useWalletSync } from './features/Wallet/hooks';
+import { useFTBalance, useFTBalanceSync } from '@/features/ScoreBalance/hooks';
 import { LoginPage } from './pages/LoginPage';
 import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
 
@@ -25,6 +25,8 @@ function AppComponent() {
   const { isAuthReady } = useAuth();
   const { isAccountReady, account } = useAccount();
   const { state, isStateRead } = useProgramState();
+
+  useFTBalanceSync();
   const setStrategyIds = useSetAtom(STRATEGY_IDS);
   const setCurrentGame = useSetAtom(CURRENT_GAME);
   const setMsgToGameId = useSetAtom(MSG_TO_GAME_ID);
@@ -49,7 +51,7 @@ function AppComponent() {
       <ScrollToTop />
       {isAppReady ? (
         <>
-          <Header menu={routes} />
+          <Header />
           <div className={cx(styles['main-content'])}>
             <Routes>
               <Route
@@ -72,14 +74,6 @@ function AppComponent() {
                   element={
                     <ProtectedRoute>
                       <IntrodutionPic />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path={`/${LEADERBOARD}`}
-                  element={
-                    <ProtectedRoute>
-                      <LeaderBoard />
                     </ProtectedRoute>
                   }
                 />
