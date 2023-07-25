@@ -19,20 +19,31 @@ function Layout() {
   const [currentGame] = useAtom(CURRENT_GAME);
   const [gameConfig] = useAtom(CONFIG);
   const [isPlayerAction, setIsPlayerAction] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { account } = useAccount();
   const navigate = useNavigate();
   const sendPlayerMoveMessage = usePlayerMoveMessage();
   const { meta, message } = useStartGameMessage();
 
+  const defineStrategyAction = (type: 'accelerate' | 'shoot' | 'none') => {
+    if (type === 'accelerate') {
+      return 'BuyAcceleration';
+    }
+
+    if (type === 'shoot') {
+      return 'BuyShell';
+    }
+
+    if (type === 'none') {
+      return 'Skip';
+    }
+  };
+
   const handleActionChoose = (type: 'accelerate' | 'shoot' | 'none') => {
     setIsPlayerAction(false);
     const payload = {
       PlayerMove: {
-        strategy_action: {
-          BuyAcceleration: type === 'accelerate' ? true : null,
-          BuyShell: type === 'shoot' ? true : null,
-          Skip: type === 'none' ? true : null,
-        },
+        strategy_action: defineStrategyAction(type),
       },
     };
 
@@ -75,15 +86,17 @@ function Layout() {
     (startManually?: boolean) => {
       if (meta && (!currentGame || startManually)) {
         setIsPlayerAction(false);
+        setIsLoading(true);
         const payload = {
           StartGame: null,
         };
 
         message(payload, {
           onSuccess: () => {
-            if (startManually) {
-              window.location.reload();
-            }
+            // if (startManually) {
+            //   window.location.reload();
+            // }
+            setIsLoading(false);
             setIsPlayerAction(true);
           },
           onError: () => {
@@ -103,7 +116,7 @@ function Layout() {
 
   return (
     <>
-      {currentGame && account && gameConfig ? (
+      {currentGame && account && gameConfig && !isLoading ? (
         <div>
           <Heading
             currentTurn={currentGame.currentRound}
