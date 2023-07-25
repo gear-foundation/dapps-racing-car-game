@@ -93,9 +93,6 @@ function Layout() {
 
         message(payload, {
           onSuccess: () => {
-            // if (startManually) {
-            //   window.location.reload();
-            // }
             setIsLoading(false);
             setIsPlayerAction(true);
           },
