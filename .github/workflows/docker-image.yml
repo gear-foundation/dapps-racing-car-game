@@ -42,6 +42,7 @@ jobs:
       - name: Build and push Racing Game image
         uses: docker/build-push-action@master
         with:
+          context: frontend
           file: frontend/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
