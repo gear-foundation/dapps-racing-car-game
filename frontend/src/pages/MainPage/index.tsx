@@ -1,4 +1,4 @@
-import { Layout } from './components';
+import { Layout } from '../../features/Main/components';
 
 function MainPage() {
   return <Layout />;

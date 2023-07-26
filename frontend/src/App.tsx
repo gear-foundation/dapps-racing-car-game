@@ -12,7 +12,7 @@ import { Loader } from './components/Loader';
 import styles from './App.module.scss';
 import 'babel-polyfill';
 import { useProgramState } from './hooks';
-import { IntrodutionPic } from './pages/MainPage/components/IntrodutionPic';
+import { IntrodutionPic } from './features/Main/components/IntrodutionPic';
 import { CONFIG, CURRENT_GAME, MSG_TO_GAME_ID, STRATEGY_IDS } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
 import { useWalletSync } from './features/Wallet/hooks';
