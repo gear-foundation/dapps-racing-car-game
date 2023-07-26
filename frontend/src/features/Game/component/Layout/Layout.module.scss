@@ -27,7 +27,11 @@
   font-weight: 700;
 
   &-red {
-    background: linear-gradient(270deg, #64FFDB 0%, #FF7979 0.01%);;
+    background: linear-gradient(270deg, #64FFDB 0%, #FF7979 0.01%);
+  }
+
+  &-gray {
+    background: theme-var($text-tertiary);
   }
 }
 
