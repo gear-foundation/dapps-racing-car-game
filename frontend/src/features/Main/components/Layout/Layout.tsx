@@ -1,7 +1,8 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@ui';
 import styles from './Layout.module.scss';
 import { cx } from '@/utils';
+import { IntrodutionPic } from '../IntrodutionPic';
 
 function Layout() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ function Layout() {
         <Button label="Play" variant="primary" size="large" onClick={handleGoToPlay} />
       </div>
       <div className={cx(styles.right)}>
-        <Outlet />
+        <IntrodutionPic />
       </div>
     </div>
   );

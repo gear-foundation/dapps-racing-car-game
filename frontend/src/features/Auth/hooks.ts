@@ -1,148 +1,100 @@
-import type { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { useLocation, useNavigate } from 'react-router';
 import { useAtom } from 'jotai';
-import { useAlert, useAccount } from '@gear-js/react-hooks';
+import { useAlert, useAccount, Account } from '@gear-js/react-hooks';
 import { useEffect } from 'react';
 import { web3FromAddress } from '@polkadot/extension-dapp';
-import {
-  AUTH_API_ADDRESS,
-  AUTH_MESSAGE,
-  AUTH_TOKEN_ATOM,
-  AUTH_TOKEN_LOCAL_STORAGE_KEY,
-  DISCORD_USERNAME_ATOM,
-  IS_AUTH_READY_ATOM,
-} from './consts';
+import { AUTH_MESSAGE, AUTH_TOKEN_ATOM, AUTH_TOKEN_LOCAL_STORAGE_KEY } from './consts';
 import { fetchAuth, post } from './utils';
-import { AuthResponse, SignInResponse } from './types';
+import { AuthResponse, ISignInError, SignInResponse } from './types';
+
+import { NOT_AUTHORIZED, PLAY } from '@/App.routes';
 
 function useAuth() {
-  const [authToken, setAuthToken] = useAtom(AUTH_TOKEN_ATOM);
-  const [discordUsername, setDiscordUsername] = useAtom(DISCORD_USERNAME_ATOM);
-  const [isAuthReady, setIsAuthReady] = useAtom(IS_AUTH_READY_ATOM);
-  const { account, login, logout } = useAccount();
-  const isAwaitingVerification = account && !authToken;
-
+  const { login, logout } = useAccount();
   const alert = useAlert();
+  const [authToken, setAuthToken] = useAtom(AUTH_TOKEN_ATOM);
 
-  const signIn = (_account: InjectedAccountWithMeta) => {
-    const { address } = _account;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || PLAY;
 
-    return web3FromAddress(address)
-      .then(({ signer }) => {
-        if (!signer.signRaw) throw new Error('signRaw not exists');
+  const signIn = async (account: Account) => {
+    const { address } = account;
 
-        return signer.signRaw({ address, data: AUTH_MESSAGE, type: 'payload' });
-      })
-      .then(({ signature }) => signature)
-      .then((signature) =>
-        fetch(`${AUTH_API_ADDRESS}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ signature, publicKey: address, message: AUTH_MESSAGE }),
-        }).then((response) => {
-          if (!response.ok && response.status !== 409) throw new Error(response.statusText);
+    try {
+      const { signer } = await web3FromAddress(address);
+      if (!signer.signRaw) throw new Error('signRaw not exists');
 
-          return response.json();
-        }),
-      )
-      .then((result) => {
-        if (result.errors && result.errors.message === 'Please confirm email') {
-          login(_account);
+      const { signature } = await signer.signRaw({
+        address,
+        data: AUTH_MESSAGE,
+        type: 'bytes',
+      });
+      const res = await post('auth/login', {
+        signature,
+        publicKey: address,
+        message: AUTH_MESSAGE,
+      });
 
-          setAuthToken('');
-          setDiscordUsername('');
-          console.log('aaaa');
-        } else {
-          login(_account);
-          console.log('vvbvv');
-          setAuthToken(result.accessToken);
-          setDiscordUsername(result.discord || '');
+      if (!res.ok) {
+        const data: ISignInError = await res.json();
+
+        if (data.message) {
+          alert.error(data.message);
         }
-      })
-      .catch(({ message }: Error) => alert.error(message));
+
+        if (data.errors) {
+          alert.error(data.message);
+        } else {
+          alert.error('Something wrong');
+        }
+
+        setAuthToken(null);
+        await login(account);
+        navigate(NOT_AUTHORIZED, { replace: true });
+      } else {
+        const data: SignInResponse = await res.json();
+        const { accessToken } = data;
+
+        await login(account);
+        setAuthToken(accessToken);
+        navigate(from, { replace: true });
+      }
+    } catch (e) {
+      alert.error(`${e}`);
+    }
   };
 
   const signOut = () => {
     logout();
-    setAuthToken('');
-  };
-
-  const verify = (token: string) => {
-    post<SignInResponse>('email_confirmation/confirm', { token })
-      .then(({ accessToken, discord }) => {
-        setAuthToken(accessToken);
-        setDiscordUsername(discord || '');
-
-        alert.success('Email confirmed');
-      })
-      .catch(({ message }) => alert.error(message));
+    setAuthToken(null);
   };
 
   const auth = () => {
-    const localStorageToken = localStorage[AUTH_TOKEN_LOCAL_STORAGE_KEY] as string | null;
+    if (!authToken) return;
 
-    if (!localStorageToken) {
-      setIsAuthReady(true);
-
-      console.log('yyyyyyyyyy');
-
-      if (!isAwaitingVerification) {
-        console.log('wwwwwwwwwww');
-        logout();
-      }
-
-      return;
-    }
-
-    fetchAuth<AuthResponse>('auth/me', 'PUT', localStorageToken)
-      .then(({ discord }) => {
-        setAuthToken(localStorageToken);
-        setDiscordUsername(discord || '');
-      })
-      .catch(({ message }: Error) => {
-        signOut();
-        localStorage.removeItem(AUTH_TOKEN_LOCAL_STORAGE_KEY);
-        alert.error(message);
-      })
-      .finally(() => setIsAuthReady(true));
+    fetchAuth<AuthResponse>('auth/me', 'PUT', authToken).catch(({ message }: Error) => {
+      signOut();
+      alert.error(message);
+    });
   };
 
-  return {
-    authToken,
-    discordUsername,
-    isAuthReady,
-    isAwaitingVerification,
-    signIn,
-    signOut,
-    auth,
-    setDiscordUsername,
-    verify,
-  };
+  return { authToken, signIn, signOut, auth };
 }
 
 function useAuthSync() {
-  const { isAccountReady } = useAccount();
-  const { authToken, isAuthReady, auth } = useAuth();
+  const { authToken, auth } = useAuth();
 
   useEffect(() => {
-    if (!isAccountReady) {
-      return;
-    }
-
     auth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAccountReady]);
+  }, [authToken]);
 
   useEffect(() => {
-    if (!isAuthReady) {
-      return;
-    }
-
-    if (!authToken) {
-      return localStorage.removeItem(AUTH_TOKEN_LOCAL_STORAGE_KEY);
-    }
+    if (!authToken) return localStorage.removeItem(AUTH_TOKEN_LOCAL_STORAGE_KEY);
 
     localStorage.setItem(AUTH_TOKEN_LOCAL_STORAGE_KEY, authToken);
-  }, [isAuthReady, authToken]);
+  }, [authToken]);
 }
 
 export { useAuth, useAuthSync };

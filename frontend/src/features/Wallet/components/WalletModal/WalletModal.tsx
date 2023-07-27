@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Identicon from '@polkadot/react-identicon';
 import { decodeAddress } from '@gear-js/api';
 import { useAccount } from '@gear-js/react-hooks';
@@ -53,7 +53,7 @@ function WalletModal({ onClose }: WalletModalProps) {
 
       const handleClick = () => {
         signIn(_account).then(() => {
-          navigate('/play');
+          navigate(`/`);
         });
         saveWallet();
         onClose();

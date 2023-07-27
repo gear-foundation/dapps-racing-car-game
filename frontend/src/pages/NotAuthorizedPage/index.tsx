@@ -6,7 +6,7 @@ import { NotAuthorized } from '@/features/Auth/components';
 function NotAuthorizedPage() {
   const { account } = useAccount();
 
-  if (!account) return <Navigate to={LOGIN} replace />;
+  if (!account) return <Navigate to={`/${LOGIN}`} />;
 
   return <NotAuthorized />;
 }

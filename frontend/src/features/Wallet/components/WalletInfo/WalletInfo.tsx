@@ -20,7 +20,6 @@ function WalletInfo({ account }: WalletInfoProps) {
   };
 
   const handleOpenWalletModal = () => {
-    console.log('ffff');
     setIsWalletModalOpen(true);
   };
 
