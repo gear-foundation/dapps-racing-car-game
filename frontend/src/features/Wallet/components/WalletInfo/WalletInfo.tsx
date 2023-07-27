@@ -9,6 +9,7 @@ import { WalletInfoProps } from './WalletInfo.interfaces';
 import { Button } from '@/ui';
 import { WalletModal } from '../WalletModal';
 import styles from './WalletInfo.module.scss';
+import { ScorePPV } from '@/components/ScorePPV';
 
 function WalletInfo({ account }: WalletInfoProps) {
   const address = useAtom(CONTRACT_ADDRESS_ATOM);
@@ -19,6 +20,7 @@ function WalletInfo({ account }: WalletInfoProps) {
   };
 
   const handleOpenWalletModal = () => {
+    console.log('ffff');
     setIsWalletModalOpen(true);
   };
 
@@ -26,6 +28,9 @@ function WalletInfo({ account }: WalletInfoProps) {
     <>
       {account ? (
         <div className={cx(styles['wallet-info'])}>
+          <div className={cx(styles.score)}>
+            <ScorePPV />
+          </div>
           <div className={cx(styles.balance)}>
             <img src={coin} alt="wara coin" className={cx(styles['balance-coin-image'])} />
             <div className={cx(styles['balance-value'])}>{account.balance.value}</div>

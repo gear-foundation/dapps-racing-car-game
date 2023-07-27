@@ -15,12 +15,14 @@ import { WalletId } from '../../types';
 import styles from './WalletModal.module.scss';
 import { Button } from '@/ui';
 import { WalletModalProps } from './WalletModal.interface';
+import { useAuth } from '@/features/Auth/hooks';
 
 function WalletModal({ onClose }: WalletModalProps) {
-  const { extensions, account, login, logout } = useAccount();
+  const { extensions, account } = useAccount();
   const { wallet, walletAccounts, setWalletId, resetWalletId, getWalletAccounts, saveWallet, removeWallet } =
     useWallet();
   const navigate = useNavigate();
+  const { signIn, signOut } = useAuth();
 
   const getWallets = () =>
     Object.entries(WALLET).map(([id, { SVG, name }]) => {
@@ -50,7 +52,7 @@ function WalletModal({ onClose }: WalletModalProps) {
       const isActive = address === account?.address;
 
       const handleClick = () => {
-        login(_account).then(() => {
+        signIn(_account).then(() => {
           navigate('/play');
         });
         saveWallet();
@@ -80,7 +82,7 @@ function WalletModal({ onClose }: WalletModalProps) {
     });
 
   const handleLogoutButtonClick = () => {
-    logout();
+    signOut();
     removeWallet();
     onClose();
   };

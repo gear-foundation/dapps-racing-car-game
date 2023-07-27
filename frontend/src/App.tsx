@@ -26,7 +26,6 @@ function AppComponent() {
   const { isAccountReady, account } = useAccount();
   const { state, isStateRead } = useProgramState();
 
-  useFTBalanceSync();
   const setStrategyIds = useSetAtom(STRATEGY_IDS);
   const setCurrentGame = useSetAtom(CURRENT_GAME);
   const setMsgToGameId = useSetAtom(MSG_TO_GAME_ID);
@@ -45,6 +44,7 @@ function AppComponent() {
 
   useWalletSync();
   useAuthSync();
+  useFTBalanceSync();
 
   return (
     <div className={cx(styles['app-container'])}>

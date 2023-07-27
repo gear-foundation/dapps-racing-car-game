@@ -50,9 +50,10 @@ function useAuth() {
 
           setAuthToken('');
           setDiscordUsername('');
+          console.log('aaaa');
         } else {
           login(_account);
-
+          console.log('vvbvv');
           setAuthToken(result.accessToken);
           setDiscordUsername(result.discord || '');
         }
@@ -82,7 +83,12 @@ function useAuth() {
     if (!localStorageToken) {
       setIsAuthReady(true);
 
-      if (!isAwaitingVerification) logout();
+      console.log('yyyyyyyyyy');
+
+      if (!isAwaitingVerification) {
+        console.log('wwwwwwwwwww');
+        logout();
+      }
 
       return;
     }
@@ -118,15 +124,22 @@ function useAuthSync() {
   const { authToken, isAuthReady, auth } = useAuth();
 
   useEffect(() => {
-    if (!isAccountReady) return;
+    if (!isAccountReady) {
+      return;
+    }
 
     auth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAccountReady]);
 
   useEffect(() => {
-    if (!isAuthReady) return;
-    if (!authToken) return localStorage.removeItem(AUTH_TOKEN_LOCAL_STORAGE_KEY);
+    if (!isAuthReady) {
+      return;
+    }
+
+    if (!authToken) {
+      return localStorage.removeItem(AUTH_TOKEN_LOCAL_STORAGE_KEY);
+    }
 
     localStorage.setItem(AUTH_TOKEN_LOCAL_STORAGE_KEY, authToken);
   }, [isAuthReady, authToken]);

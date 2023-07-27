@@ -15,6 +15,7 @@ import { useMediaQuery } from '@/hooks';
 import menuIcon from '@/assets/icons/burger-menu-icon.svg';
 import { BurgerMenu } from '../BurgerMenu/BurgerMenu';
 import { ScorePPV } from '../ScorePPV';
+import { WalletInfo } from '@/features/Wallet/components/WalletInfo';
 
 function Header({ menu }: HeaderProps) {
   const location = useLocation();
@@ -62,27 +63,7 @@ function Header({ menu }: HeaderProps) {
                         );
                       })}
                   </nav>
-                  <div className={cx(styles['wallet-info'])}>
-                    <div className={cx(styles.score)}>
-                      <ScorePPV />
-                    </div>
-                    <div className={cx(styles.balance)}>
-                      <img src={coin} alt="wara coin" className={cx(styles['balance-coin-image'])} />
-                      <div className={cx(styles['balance-value'])}>{account.balance.value}</div>
-                      <div className={cx(styles['balance-currency-name'])}>{account.balance.unit}</div>
-                    </div>
-                    <button className={cx(styles.description)}>
-                      {address && (
-                        <Identicon
-                          value={ADDRESS.CONTRACT}
-                          size={21}
-                          theme="polkadot"
-                          className={cx(styles['description-icon'])}
-                        />
-                      )}
-                      <div className={cx(styles['description-name'])}>{account?.meta.name}</div>
-                    </button>
-                  </div>
+                  <WalletInfo account={account} />
                 </>
               )}
             </>
