@@ -15,13 +15,17 @@ function useCreateStreamMetadata() {
 function usePlayerMoveMessage() {
   const meta = useCreateStreamMetadata();
 
-  return useSendMessage(ADDRESS.CONTRACT, meta);
+  return useSendMessage(ADDRESS.CONTRACT, meta, {
+    disableAlerts: true,
+  });
 }
 
 function useStartGameMessage() {
   const meta = useCreateStreamMetadata();
 
-  const message = useSendMessage(ADDRESS.CONTRACT, meta);
+  const message = useSendMessage(ADDRESS.CONTRACT, meta, {
+    disableAlerts: true,
+  });
 
   return { meta, message };
 }
