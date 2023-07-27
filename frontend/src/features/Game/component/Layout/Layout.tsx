@@ -9,7 +9,6 @@ import { Road } from '../Road';
 import { Button } from '@/ui';
 import accelerateSVG from '@/assets/icons/accelerate-icon.svg';
 import shootSVG from '@/assets/icons/shoot-icon.svg';
-import crossSVG from '@/assets/icons/cross-icon.svg';
 import { CONFIG, CURRENT_GAME } from '@/atoms';
 import { usePlayerMoveMessage, useStartGameMessage } from '../../hooks';
 import { YourRewards } from '../YourRewards';
@@ -26,7 +25,7 @@ function Layout() {
   const sendPlayerMoveMessage = usePlayerMoveMessage();
   const { meta, message } = useStartGameMessage();
 
-  const defineStrategyAction = (type: 'accelerate' | 'shoot' | 'none') => {
+  const defineStrategyAction = (type: 'accelerate' | 'shoot') => {
     if (type === 'accelerate') {
       return 'BuyAcceleration';
     }
@@ -34,13 +33,9 @@ function Layout() {
     if (type === 'shoot') {
       return 'BuyShell';
     }
-
-    if (type === 'none') {
-      return 'Skip';
-    }
   };
 
-  const handleActionChoose = (type: 'accelerate' | 'shoot' | 'none') => {
+  const handleActionChoose = (type: 'accelerate' | 'shoot') => {
     setIsPlayerAction(false);
     const payload = {
       PlayerMove: {
@@ -141,15 +136,6 @@ function Layout() {
                 disabled={!isPlayerAction}
                 className={cx(styles['control-button'], styles['control-button-red'])}
                 onClick={() => handleActionChoose('shoot')}
-              />
-              <Button
-                label="Skip"
-                variant="primary"
-                size="large"
-                icon={crossSVG}
-                disabled={!isPlayerAction}
-                className={cx(styles['control-button'], styles['control-button-gray'])}
-                onClick={() => handleActionChoose('none')}
               />
             </div>
           )}
