@@ -51,6 +51,8 @@ jobs:
             REACT_APP_AUTH_API_ADDRESS=${{ secrets.REACT_APP_AUTH_API_ADDRESS }}
             REACT_APP_TESTNET_URL=${{ secrets.REACT_APP_TESTNET_URL }}
             REACT_APP_FT_ADDRESS=${{ secrets.REACT_APP_FT_ADDRESS }}
+            REACT_APP_CONTRACT_ADDRESS=${{ secrets.REACT_APP_CONTRACT_ADDRESS }}
+            REACT_APP_NODE=${{ secrets.REACT_APP_NODE }}
 
   deploy-to-k8s:
     needs: build-dapps-racing-image
