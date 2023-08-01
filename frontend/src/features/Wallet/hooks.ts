@@ -1,6 +1,6 @@
+import { Buffer } from 'buffer';
 import { useEffect, useState } from 'react';
 import { useAlert, useAccount } from '@gear-js/react-hooks';
-import { Buffer } from 'buffer';
 import { LOCAL_STORAGE } from '@/consts';
 import { WALLET, WALLET_ID_LOCAL_STORAGE_KEY } from './consts';
 import { WalletId } from './types';

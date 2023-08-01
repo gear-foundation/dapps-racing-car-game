@@ -94,7 +94,7 @@ function Layout() {
           },
           onError: () => {
             console.log('error');
-            navigate('/play');
+            navigate('/');
           },
         });
       }

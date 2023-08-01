@@ -23,9 +23,7 @@ function usePlayerMoveMessage() {
 function useStartGameMessage() {
   const meta = useCreateStreamMetadata();
 
-  const message = useSendMessage(ADDRESS.CONTRACT, meta, {
-    disableAlerts: true,
-  });
+  const message = useSendMessage(ADDRESS.CONTRACT, meta);
 
   return { meta, message };
 }
