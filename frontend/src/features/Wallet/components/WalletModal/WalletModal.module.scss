@@ -1,7 +1,10 @@
 @use '~styles/variables' as *;
 @use '~styles/mixins' as *;
 
-.list {  
+.list {
+    max-height: 430px;
+    overflow-y: auto;
+
     .wallet-button {
       width: 100%;
       min-height: 48px;
@@ -45,6 +48,16 @@
   .account {
     display: flex;
     align-items: center;
+    margin: 10px 0;
+
+    &-identicon {
+      display: inline;
+    }
+
+    &-name {
+      max-width: 200px;
+      white-space: nowrap;
+    }
   
     &-button {
       width: 100%;
@@ -60,9 +73,19 @@
       color: theme-var($text-primary);
       background-color: theme-var($background-primary);
       transition: all 0.3s;
+      overflow-y: auto;
       border: none;
       outline: none;
       cursor: pointer;
+
+      &-content {
+        width: 100%;
+        padding-left: 10px;
+        gap: 10px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
   
       &.active {
         background: theme-var($green-special);
@@ -72,6 +95,7 @@
         background-color: theme-var($background-primary);
       }
     }
+
   }
   
   .footer {
