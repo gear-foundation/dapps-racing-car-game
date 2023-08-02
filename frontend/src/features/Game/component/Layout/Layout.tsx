@@ -110,7 +110,7 @@ function Layout() {
   return (
     <>
       {currentGame && account && gameConfig && !isLoading ? (
-        <div>
+        <div className={cx(styles.container)}>
           <Heading
             currentTurn={currentGame.currentRound}
             isPlayerAction={isPlayerAction}
