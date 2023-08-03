@@ -1,6 +1,6 @@
 import { LegacyRef, MutableRefObject, Ref, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { withoutCommas } from '@gear-js/react-hooks';
-import isequal from 'lodash.isequal';
+import isEqual from 'lodash.isequal';
 import styles from './Road.module.scss';
 import { cx } from '@/utils';
 import startSVG from '@/assets/icons/game-start-icon.svg';
@@ -224,6 +224,6 @@ function RoadComponent({ newCars, carIds }: RoadProps) {
   );
 }
 
-const Road = memo(RoadComponent, isequal);
+const Road = memo(RoadComponent, isEqual);
 
 export { Road };
