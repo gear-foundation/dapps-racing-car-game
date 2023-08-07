@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAtom } from 'jotai';
+import isEqual from 'lodash.isequal';
 import { useAccount } from '@gear-js/react-hooks';
 import styles from './Layout.module.scss';
 import { cx } from '@/utils';
@@ -15,7 +16,7 @@ import { YourRewards } from '../YourRewards';
 import { Loader } from '@/components';
 import { WinStatus } from './Layout.interface';
 
-function Layout() {
+function LayoutComponent() {
   const [currentGame] = useAtom(CURRENT_GAME);
   const [gameConfig] = useAtom(CONFIG);
   const [isPlayerAction, setIsPlayerAction] = useState<boolean>(true);
@@ -35,6 +36,10 @@ function Layout() {
     }
   };
 
+  useEffect(() => {
+    setIsPlayerAction(true);
+  }, [currentGame]);
+
   const handleActionChoose = (type: 'accelerate' | 'shoot') => {
     setIsPlayerAction(false);
     const payload = {
@@ -44,9 +49,6 @@ function Layout() {
     };
 
     sendPlayerMoveMessage(payload, {
-      onSuccess: () => {
-        setIsPlayerAction(true);
-      },
       onError: () => {
         console.log('error');
         setIsPlayerAction(true);
@@ -94,7 +96,7 @@ function Layout() {
           },
           onError: () => {
             console.log('error');
-            navigate('/play');
+            navigate('/');
           },
         });
       }
@@ -110,7 +112,7 @@ function Layout() {
   return (
     <>
       {currentGame && account && gameConfig && !isLoading ? (
-        <div>
+        <div className={cx(styles.container)}>
           <Heading
             currentTurn={currentGame.currentRound}
             isPlayerAction={isPlayerAction}
@@ -159,5 +161,7 @@ function Layout() {
     </>
   );
 }
+
+const Layout = memo(LayoutComponent, isEqual);
 
 export { Layout };

@@ -9,3 +9,4 @@ export * from './DropzoneUploader';
 export * from './TimePicker';
 export * from './Input';
 export * from './InputArea';
+export * from './Alert';

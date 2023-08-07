@@ -11,9 +11,8 @@
 
 .main-content {
   flex: 1;
-  // max-width: 1200px;
-  height: 100%;
   width: 100%;
+  display: flex;
   margin: auto;
   background: theme-var($background-primary);
 }

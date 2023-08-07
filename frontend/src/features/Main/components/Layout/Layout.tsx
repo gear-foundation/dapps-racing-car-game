@@ -1,11 +1,15 @@
+import { useAtomValue } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@ui';
 import styles from './Layout.module.scss';
 import { cx } from '@/utils';
 import { IntrodutionPic } from '../IntrodutionPic';
 
+import { CURRENT_GAME } from '@/atoms';
+
 function Layout() {
   const navigate = useNavigate();
+  const currentGame = useAtomValue(CURRENT_GAME);
 
   const handleGoToPlay = () => {
     navigate('/start');
@@ -19,7 +23,12 @@ function Layout() {
           A racing car game in which you compete not against a human, but against a smart contract. You will be given
           the choice to either accelerate or shoot at the nearest car.
         </p>
-        <Button label="Play" variant="primary" size="large" onClick={handleGoToPlay} />
+        <Button
+          label={currentGame ? 'Continue Game' : 'Start the game'}
+          variant="primary"
+          size="large"
+          onClick={handleGoToPlay}
+        />
       </div>
       <div className={cx(styles.right)}>
         <IntrodutionPic />
