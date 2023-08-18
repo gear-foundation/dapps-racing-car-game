@@ -32,7 +32,7 @@ function AppComponent() {
   useEffect(() => {
     if (state && isStateRead && isAccountReady && account) {
       setStrategyIds(state.strategyIds);
-      setCurrentGame(state.games[account?.decodedAddress] || null);
+      setCurrentGame(state.games?.find((game) => game[0] === account?.decodedAddress)?.[1] || null);
       setMsgToGameId(state.msgIdToGameId);
       setConfig(state.config);
     }

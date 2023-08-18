@@ -6,9 +6,7 @@ export type Entries<T> = {
 
 export type Handler = (event: Event) => void;
 
-export interface GamesState {
-  [key: string]: GameState;
-}
+export type GamesState = [string, GameState][];
 
 export interface Car {
   balance: string;
