@@ -4,8 +4,8 @@
 .content {
     display: flex;
     align-items: center;
-    padding: 0 276px;
-    width: 100%;
+    // padding: 0 440px;
+    width: 940px;
     margin: auto;
     background: theme-var($background-primary);
 
@@ -33,24 +33,24 @@
     flex-direction: column;
     justify-content: center;
     gap: 24px;
-}
 
-.main-title {
-    font-size: 40px;
-    font-weight: 500;
-
-    &-with-gradient {
-        background: linear-gradient(90deg, #2B2B2B 33.39%, #00FFC4 77.42%);
-        -webkit-background-clip: text;
-        background-clip: text; 
-        -webkit-text-fill-color: transparent;
+    .main-title {
+        font-size: 40px;
+        font-weight: 500;
+    
+        &-with-gradient {
+            background: linear-gradient(90deg, #2B2B2B 33.39%, #00FFC4 77.42%);
+            -webkit-background-clip: text;
+            background-clip: text; 
+            -webkit-text-fill-color: transparent;
+        }
     }
-}
-
-.main-description {
-    max-width: 370px;
-    font-size: 18px;
-    font-weight: 400;
+    
+    .main-description {
+        max-width: 370px;
+        font-size: 18px;
+        font-weight: 400;
+    }
 }
 
 .right {
@@ -59,23 +59,4 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-.lower-img {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0.5;
-}
-
-.upper-img {
-    position: absolute;
-    left: 40%;
-    top: 0;
-}
-
-.courtain {
-    left: 0;
-    top: 0;
-    position: absolute;
 }

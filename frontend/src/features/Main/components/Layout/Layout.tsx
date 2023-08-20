@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@ui';
 import styles from './Layout.module.scss';
 import { cx } from '@/utils';
-import { IntrodutionPic } from '../IntrodutionPic';
+import carsImg from '@/assets/icons/introdution-cars-img.png';
 
 import { CURRENT_GAME } from '@/atoms';
 
@@ -31,7 +31,7 @@ function Layout() {
         />
       </div>
       <div className={cx(styles.right)}>
-        <IntrodutionPic />
+        <img src={carsImg} alt="cars" />
       </div>
     </div>
   );
