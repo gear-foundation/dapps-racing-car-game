@@ -9,7 +9,7 @@ import { WalletInfoProps } from './WalletInfo.interfaces';
 import { Button } from '@/ui';
 import { WalletModal } from '../WalletModal';
 import styles from './WalletInfo.module.scss';
-import { ScorePPV } from '@/components/ScorePPV';
+import { ScorePPV } from '@/features/ScoreBalance/components';
 
 function WalletInfo({ account }: WalletInfoProps) {
   const address = useAtom(CONTRACT_ADDRESS_ATOM);

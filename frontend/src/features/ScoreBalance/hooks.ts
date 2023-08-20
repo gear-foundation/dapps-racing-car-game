@@ -1,11 +1,9 @@
-import { HexString } from '@polkadot/util/types';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useAccount } from '@gear-js/react-hooks';
 import { useReadState } from '@/hooks';
 import { FT_BALANCE, FT_BALANCE_READY } from './atoms';
-import { IFTLogic, IFTMain, IFTStorage } from './types';
-import { getAccountBalanceById, getFTStorageIdByAccount } from './utils';
+import { IFTMain } from './types';
 import { ADDRESS } from './consts';
 import meta from './assets/fungible_token.meta.txt';
 

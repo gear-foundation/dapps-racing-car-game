@@ -2,7 +2,7 @@ import styles from './YourRewards.module.scss';
 import { cx } from '@/utils';
 import { ReactComponent as YourRewardsSVG } from '@/assets/icons/your-rewards-icon.svg';
 import { YourRewardsProps } from './YourRewards.interface';
-import { ScorePPV } from '@/components/ScorePPV';
+import { ScorePPV } from '@/features/ScoreBalance/components/ScorePPV';
 
 function YourRewards({ rewards }: YourRewardsProps) {
   return (

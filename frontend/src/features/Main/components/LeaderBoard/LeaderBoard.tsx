@@ -2,7 +2,7 @@ import { Cell, Row, Table } from '@ui';
 import styles from './LeaderBoard.module.scss';
 import { cx } from '@/utils';
 import { CellValue, TableRow } from '@/ui/Table/Table.interfaces';
-import { ScorePPV } from '@/components/ScorePPV';
+import { ScorePPV } from '@/features/ScoreBalance/components/ScorePPV';
 
 const columns = ['#', 'Name and wallet', 'Victories', 'Success Rate', 'Total points'];
 
