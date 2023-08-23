@@ -4,7 +4,7 @@ import { Button, Link } from '@ui';
 import { useAccount } from '@gear-js/react-hooks';
 import { cx } from '@/utils';
 import styles from './Header.module.scss';
-import logo from '@/assets/icons/logo-vara-black.png';
+import logo from '@/assets/icons/logo-vara-black.svg';
 import { HeaderProps } from './Header.interfaces';
 import { useMediaQuery } from '@/hooks';
 import menuIcon from '@/assets/icons/burger-menu-icon.svg';

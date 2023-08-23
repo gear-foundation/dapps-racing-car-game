@@ -1,10 +1,10 @@
 import { cx } from '@/utils';
 import styles from './Footer.module.scss';
-import logo from '@/assets/icons/logo-vara-black.png';
-import web from '@/assets/icons/web-icon.png';
-import discord from '@/assets/icons/discord-icon.png';
-import git from '@/assets/icons/git-icon.png';
-import twitter from '@/assets/icons/twitter-icon.png';
+import logo from '@/assets/icons/logo-vara-black.svg';
+import web from '@/assets/icons/web-icon.svg';
+import discord from '@/assets/icons/discord-icon.svg';
+import git from '@/assets/icons/git-icon.svg';
+import twitter from '@/assets/icons/twitter-icon.svg';
 
 const socials = [
   {

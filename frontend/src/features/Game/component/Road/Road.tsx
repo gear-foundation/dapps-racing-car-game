@@ -11,7 +11,8 @@ import sectionEndLineSVG from '@/assets/icons/section-end-line.svg';
 import { ReactComponent as PlayerCarSVG } from '@/assets/icons/player-car-icon.svg';
 import { ReactComponent as ContractCarSVG } from '@/assets/icons/contract-car-icon.svg';
 
-import smokeGIF from '@/assets/icons/gif-smoke.gif';
+import smokeGIF from '@/assets/icons/smoke.gif';
+import fireGIF from '@/assets/icons/fire.gif';
 import speedGIF from '@/assets/icons/gif-speed.gif';
 import { CarEffect, CarsState, RoadProps } from './Road.interface';
 import { Cars } from '@/types';
@@ -205,11 +206,29 @@ function RoadComponent({ newCars, carIds }: RoadProps) {
                   }}
                   className={cx(styles.car)}>
                   {cars[id].effect && (
-                    <img
-                      src={cars[id].effect === 'shooted' ? smokeGIF : speedGIF}
-                      alt="smoke"
-                      className={cx(styles['car-effect'], styles[`car-effect-${cars[id].effect}`])}
-                    />
+                    <>
+                      {cars[id].effect === 'accelerated' && (
+                        <img
+                          src={speedGIF}
+                          alt="smoke"
+                          className={cx(styles['car-effect'], styles[`car-effect-${cars[id].effect}`])}
+                        />
+                      )}
+                      {cars[id].effect === 'shooted' && (
+                        <div>
+                          <img
+                            src={fireGIF}
+                            alt="smoke"
+                            className={cx(styles['car-effect'], styles[`car-effect-${cars[id].effect}-fire`])}
+                          />
+                          <img
+                            src={smokeGIF}
+                            alt="smoke"
+                            className={cx(styles['car-effect'], styles[`car-effect-${cars[id].effect}-smoke`])}
+                          />
+                        </div>
+                      )}
+                    </>
                   )}
                   {i === 0 ? <PlayerCarSVG /> : <ContractCarSVG />}
                 </div>

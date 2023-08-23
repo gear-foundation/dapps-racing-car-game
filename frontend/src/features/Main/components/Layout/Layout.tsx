@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@ui';
 import styles from './Layout.module.scss';
 import { cx } from '@/utils';
-import carsImg from '@/assets/icons/introdution-cars-img.png';
+import carsImg from '@/assets/icons/introdution-cars-img.webp';
+import carsImgPng from '@/assets/icons/introdution-cars-img.png';
 
 import { CURRENT_GAME } from '@/atoms';
 
@@ -31,7 +32,11 @@ function Layout() {
         />
       </div>
       <div className={cx(styles.right)}>
-        <img src={carsImg} alt="cars" />
+        <picture>
+          <source type="image/webp" srcSet={carsImg} />
+          <source type="image/jpeg" srcSet={carsImgPng} />
+          <img src={carsImg} alt="test" className={cx(styles['cars-pic'])} />
+        </picture>
       </div>
     </div>
   );

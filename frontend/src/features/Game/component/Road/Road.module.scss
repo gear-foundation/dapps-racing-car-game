@@ -29,8 +29,16 @@
   z-index: -1;
 
   &-shooted {
-    height: 84px;
-    transform: translate(-38px, -14px);
+    &-fire {
+      height: 84px;
+      transform: translate(-45px, -10px);
+    }
+
+    &-smoke {
+      height: 204px;
+      transform: translate(-38px, -78px);
+    }
+    
   }
 
   &-accelerated {

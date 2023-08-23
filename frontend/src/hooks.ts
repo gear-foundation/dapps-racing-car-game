@@ -1,7 +1,7 @@
 import { useEffect, useState, MutableRefObject, RefObject, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ProgramMetadata, getProgramMetadata } from '@gear-js/api';
-import { useAlert, useReadFullState, withoutCommas } from '@gear-js/react-hooks';
+import { useAlert, useReadFullState } from '@gear-js/react-hooks';
 import { HexString } from '@polkadot/util/types';
 import { useAtom } from 'jotai';
 import metaTxt from '@/assets/meta/meta.txt';
