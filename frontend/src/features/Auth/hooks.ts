@@ -43,12 +43,6 @@ function useAuth() {
           alert.error(data.message);
         }
 
-        if (data.errors) {
-          alert.error(data.message);
-        } else {
-          alert.error('Something wrong');
-        }
-
         setAuthToken(null);
         await login(account);
         navigate(NOT_AUTHORIZED, { replace: true });
