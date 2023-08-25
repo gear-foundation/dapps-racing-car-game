@@ -1,5 +1,7 @@
 import { HexString } from '@polkadot/util/types';
 
+export const ACCOUNT_ID_LOCAL_STORAGE_KEY = 'account';
+
 export const LOCAL_STORAGE = {
   ACCOUNT: 'account',
   WALLET: 'wallet',

@@ -8,16 +8,16 @@ import { Header, Footer } from '@/components';
 import { withProviders } from '@/hocs';
 import { ScrollToTop, cx } from '@/utils';
 import { LOGIN, NOT_AUTHORIZED, START } from '@/App.routes';
-import { Loader } from './components/Loader';
 import styles from './App.module.scss';
 import 'babel-polyfill';
-import { useProgramState } from './hooks';
+import { useLoginByParams, useProgramState } from './hooks';
 import { CONFIG, CURRENT_GAME, MSG_TO_GAME_ID, STRATEGY_IDS } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
 import { useWalletSync } from './features/Wallet/hooks';
 import { useFTBalanceSync } from '@/features/ScoreBalance/hooks';
 import { LoginPage } from './pages/LoginPage';
 import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
+import { ApiLoader } from './components/ApiLoader';
 
 function AppComponent() {
   const { isApiReady } = useApi();
@@ -40,6 +40,7 @@ function AppComponent() {
 
   const isAppReady = isApiReady && isAccountReady && isStateRead;
 
+  useLoginByParams();
   useWalletSync();
   useAuthSync();
   useFTBalanceSync();
@@ -76,7 +77,7 @@ function AppComponent() {
           <Footer />
         </>
       ) : (
-        <Loader />
+        <ApiLoader />
       )}
     </div>
   );
