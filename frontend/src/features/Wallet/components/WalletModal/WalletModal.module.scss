@@ -92,7 +92,12 @@
       }
   
       &:hover {
-        background-color: theme-var($background-primary);
+        background-color: gray;
+      }
+
+      &:disabled {
+        background: linear-gradient(270deg,#64ffdb12,#00ffc412);
+        cursor:not-allowed;
       }
     }
 

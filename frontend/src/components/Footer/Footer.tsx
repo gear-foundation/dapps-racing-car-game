@@ -33,7 +33,7 @@ function Footer() {
   return (
     <footer className={cx(styles.footer)}>
       <div className={cx(styles.container)}>
-        <img src={logo} alt="" />
+        <img src={logo} alt="" className={cx(styles.logo)} />
         <span className={cx(styles.rigts)}>© 2023 Gear Foundation, Inc. All Rights Reserved.</span>
         <div className={cx(styles.socials)}>
           {socials.map(({ name, url, icon }) => (
