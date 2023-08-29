@@ -13,12 +13,8 @@ import 'babel-polyfill';
 import { useLoginByParams, useProgramState } from './hooks';
 import { CONFIG, CURRENT_GAME, MSG_TO_GAME_ID, STRATEGY_IDS } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
-import { useWalletSync } from './features/Wallet/hooks';
-import {
-  useAccountAvailableBalance,
-  useAccountAvailableBalanceSync,
-  useFTBalanceSync,
-} from '@/features/ScoreBalance/hooks';
+import { useAccountAvailableBalance, useAccountAvailableBalanceSync, useWalletSync } from './features/Wallet/hooks';
+import { useFTBalanceSync } from '@/features/ScoreBalance/hooks';
 import { LoginPage } from './pages/LoginPage';
 import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
 import { ApiLoader } from './components/ApiLoader';
