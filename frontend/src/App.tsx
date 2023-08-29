@@ -14,7 +14,11 @@ import { useLoginByParams, useProgramState } from './hooks';
 import { CONFIG, CURRENT_GAME, MSG_TO_GAME_ID, STRATEGY_IDS } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
 import { useWalletSync } from './features/Wallet/hooks';
-import { useFTBalanceSync } from '@/features/ScoreBalance/hooks';
+import {
+  useAccountAvailableBalance,
+  useAccountAvailableBalanceSync,
+  useFTBalanceSync,
+} from '@/features/ScoreBalance/hooks';
 import { LoginPage } from './pages/LoginPage';
 import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
 import { ApiLoader } from './components/ApiLoader';
@@ -23,6 +27,7 @@ function AppComponent() {
   const { isApiReady } = useApi();
   const { isAccountReady, account } = useAccount();
   const { state, isStateRead } = useProgramState();
+  const { isAvailableBalanceReady } = useAccountAvailableBalance();
 
   const setStrategyIds = useSetAtom(STRATEGY_IDS);
   const setCurrentGame = useSetAtom(CURRENT_GAME);
@@ -38,12 +43,13 @@ function AppComponent() {
     }
   }, [state, isStateRead, setStrategyIds, setCurrentGame, setMsgToGameId, setConfig, account, isAccountReady]);
 
-  const isAppReady = isApiReady && isAccountReady && isStateRead;
+  const isAppReady = isApiReady && isAccountReady && isStateRead && isAvailableBalanceReady;
 
   useLoginByParams();
   useWalletSync();
   useAuthSync();
   useFTBalanceSync();
+  useAccountAvailableBalanceSync();
 
   return (
     <div className={cx(styles['app-container'])}>
