@@ -1,6 +1,6 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "racing-car-games-frontend",
+  "version": "1.0.0",
   "private": true,
   "devDependencies": {
     "@craco/craco": "^7.1.0",

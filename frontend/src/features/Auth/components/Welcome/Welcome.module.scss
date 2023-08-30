@@ -15,15 +15,15 @@
   font-weight: 500;
 
   &-with-gradient {
-      background: linear-gradient(
-          to right, 
-      rgba(0,0,0) 0%,
-      #00ffc4 100%,
-      #00ffc4 100% 
-      );
-      -webkit-background-clip: text;
-background-clip: text; 
--webkit-text-fill-color: transparent;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0) 0%,
+        #00ffc4 100%,
+        #00ffc4 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
@@ -32,4 +32,8 @@ background-clip: text;
   text-align: center;
   font-size: 18px;
   font-weight: 400;
+
+  > * + * {
+    margin-top: 14px;
+  }
 }

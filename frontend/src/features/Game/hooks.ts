@@ -7,23 +7,21 @@ import metaTxt from '@/assets/meta/meta.txt';
 function useCreateStreamMetadata() {
   const meta = useMetadata(metaTxt);
 
-  const memoizedMeta = useMemo(() => meta, [meta]);
-
-  return memoizedMeta;
+  return useMemo(() => meta, [meta]);
 }
 
 function usePlayerMoveMessage() {
   const meta = useCreateStreamMetadata();
 
   return useSendMessage(ADDRESS.CONTRACT, meta, {
-    disableAlerts: true,
+    disableAlerts: true, isMaxGasLimit: true,
   });
 }
 
 function useStartGameMessage() {
   const meta = useCreateStreamMetadata();
 
-  const message = useSendMessage(ADDRESS.CONTRACT, meta);
+  const message = useSendMessage(ADDRESS.CONTRACT, meta, { isMaxGasLimit: true });
 
   return { meta, message };
 }
