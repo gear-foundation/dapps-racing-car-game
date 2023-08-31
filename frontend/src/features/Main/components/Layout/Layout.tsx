@@ -7,13 +7,14 @@ import carsImg from '@/assets/icons/introdution-cars-img.webp';
 import carsImgPng from '@/assets/icons/introdution-cars-img.png';
 
 import { CURRENT_GAME } from '@/atoms';
+import { START } from '@/App.routes';
 
 function Layout() {
   const navigate = useNavigate();
   const currentGame = useAtomValue(CURRENT_GAME);
 
   const handleGoToPlay = () => {
-    navigate('/start');
+    navigate(START, { replace: true });
   };
 
   return (
