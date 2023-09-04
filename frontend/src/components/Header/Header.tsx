@@ -10,11 +10,14 @@ import { useMediaQuery } from '@/hooks';
 import menuIcon from '@/assets/icons/burger-menu-icon.svg';
 import { BurgerMenu } from '../BurgerMenu/BurgerMenu';
 import { WalletInfo } from '@/features/Wallet/components/WalletInfo';
+import { useAccountAvailableBalance } from '@/features/Wallet/hooks';
+import coin from '@/assets/icons/green_coin.svg';
 
 function Header({ menu }: HeaderProps) {
   const location = useLocation();
   const { account } = useAccount();
-  const isMobile = useMediaQuery(600);
+  const isMobile = useMediaQuery(768);
+  const { availableBalance: balance, isAvailableBalanceReady } = useAccountAvailableBalance();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const burgerMenuHandler = () => {
@@ -31,7 +34,7 @@ function Header({ menu }: HeaderProps) {
     <>
       <header className={cx(styles.header)}>
         <div className={cx(styles.container)}>
-          <Link to="/">
+          <Link to="/" className={cx(styles['logo-link'], !account ? styles['logo-link-centered'] : '')}>
             <img src={logo} alt="" />
           </Link>
           {account && (
@@ -61,9 +64,16 @@ function Header({ menu }: HeaderProps) {
               )}
             </>
           )}
-          {account && isMobile && (
-            <div className={cx(styles['burger-menu-button'])}>
-              <Button label="" variant="icon" onClick={() => setIsMobileMenuOpen(true)} icon={menuIcon} />
+          {account && isMobile && isAvailableBalanceReady && (
+            <div className={cx(styles['menu-wrapper'])}>
+              <div className={cx(styles.balance)}>
+                <img src={coin} alt="wara coin" className={cx(styles['balance-coin-image'])} />
+                <div className={cx(styles['balance-value'])}>{balance?.value || '0'}</div>
+                <div className={cx(styles['balance-currency-name'])}>{account.balance.unit}</div>
+              </div>
+              <div className={cx(styles['burger-menu-button'])}>
+                <Button label="" variant="icon" onClick={() => setIsMobileMenuOpen(true)} icon={menuIcon} />
+              </div>
             </div>
           )}
         </div>

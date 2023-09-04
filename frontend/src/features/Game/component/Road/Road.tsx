@@ -7,6 +7,10 @@ import startSVG from '@/assets/icons/game-start-icon.svg';
 import finishSVG from '@/assets/icons/game-finish-icon.svg';
 import roadLineSVG from '@/assets/icons/road-line-svg.svg';
 import sectionEndLineSVG from '@/assets/icons/section-end-line.svg';
+import startVerticalSVG from '@/assets/icons/game-start-icon-vertical.svg';
+import finishVerticalSVG from '@/assets/icons/game-finish-icon-vertical.svg';
+import roadLineVerticalSVG from '@/assets/icons/road-line-vertical.svg';
+import sectionEndLineVerticalSVG from '@/assets/icons/section-end-line-vertical.svg';
 
 import { ReactComponent as PlayerCarSVG } from '@/assets/icons/player-car-icon.svg';
 import { ReactComponent as ContractCarSVG } from '@/assets/icons/contract-car-icon.svg';
@@ -17,16 +21,17 @@ import speedGIF from '@/assets/icons/gif-speed.gif';
 import { CarEffect, CarsState, RoadProps } from './Road.interface';
 import { Cars } from '@/types';
 import { Loader } from '@/components';
+import { useMediaQuery } from '@/hooks';
+import { CanvasRoad } from '../CanvasRoad';
+import { CanvasRoadMobile } from '../CanvasRoadMobile';
 
 function RoadComponent({ newCars, carIds }: RoadProps) {
+  const isMobile = useMediaQuery(768);
   const carDistanceFromInit = 160;
-  const roadDistanceToStart = 300;
 
   const [cars, setCars] = useState<CarsState | null>(null);
   const [isRoadAssetsLoaded, setIsRoadAssetsLoaded] = useState<boolean>(false);
 
-  const canvasRoadRef: LegacyRef<HTMLCanvasElement> = useRef(null);
-  const roadRef: Ref<HTMLDivElement> = useRef(null);
   const imagesCollection: MutableRefObject<Record<string, HTMLImageElement>> = useRef({});
 
   const loadImageSync = (src: string) =>
@@ -43,6 +48,10 @@ function RoadComponent({ newCars, carIds }: RoadProps) {
     await loadImageSync(finishSVG);
     await loadImageSync(roadLineSVG);
     await loadImageSync(sectionEndLineSVG);
+    await loadImageSync(startVerticalSVG);
+    await loadImageSync(finishVerticalSVG);
+    await loadImageSync(roadLineVerticalSVG);
+    await loadImageSync(sectionEndLineVerticalSVG);
 
     setIsRoadAssetsLoaded(true);
   };
@@ -66,55 +75,6 @@ function RoadComponent({ newCars, carIds }: RoadProps) {
 
     return null;
   };
-
-  const drawSegment = (ctx: CanvasRenderingContext2D, segmentNumber: number, roadStart: number) => {
-    const stripes = imagesCollection.current[roadLineSVG];
-    const sectionEndLine = imagesCollection.current[sectionEndLineSVG];
-    const segmentWidth = 156;
-    const segmentHeight = 264;
-    const renderStart = segmentNumber * segmentWidth + roadStart;
-
-    ctx.fillStyle = 'transparent';
-
-    ctx.fillRect(renderStart, 0, segmentWidth, segmentHeight);
-
-    ctx.drawImage(stripes, renderStart, (segmentHeight * 1) / 3);
-    ctx.drawImage(stripes, renderStart, (segmentHeight * 2) / 3);
-
-    ctx.drawImage(sectionEndLine, renderStart + segmentWidth, 11);
-    ctx.drawImage(sectionEndLine, renderStart + segmentWidth, segmentHeight - 10 - sectionEndLine.height);
-
-    ctx.fillStyle = '#C5C5C5';
-
-    ctx.fillText(String(segmentNumber + 1), renderStart + segmentWidth - 20, 22);
-    ctx.fillText(String(segmentNumber + 1), renderStart + segmentWidth - 20, segmentHeight - 14);
-  };
-
-  const initRoad = useCallback(() => {
-    if (isRoadAssetsLoaded) {
-      const roadCtx = canvasRoadRef.current?.getContext('2d');
-      const sections = Array(20)
-        .fill(0)
-        .map((_, i) => i);
-
-      if (roadCtx) {
-        const startLine = imagesCollection.current[startSVG];
-        const finishLine = imagesCollection.current[finishSVG];
-
-        roadCtx.drawImage(startLine, roadDistanceToStart, (264 - startLine.height) / 2);
-
-        sections.forEach((item) => {
-          drawSegment(roadCtx, item, roadDistanceToStart + startLine.width + 15);
-        });
-
-        roadCtx.drawImage(
-          finishLine,
-          roadDistanceToStart + startLine.width + 30 + sections.length * 156,
-          (264 - startLine.height) / 2,
-        );
-      }
-    }
-  }, [isRoadAssetsLoaded]);
 
   const initCars = () => {
     const carPositionsY = [108, 30, 185];
@@ -154,24 +114,6 @@ function RoadComponent({ newCars, carIds }: RoadProps) {
     });
   };
 
-  const correctFocusOnPlayerCar = useCallback(() => {
-    const roadCtx = canvasRoadRef.current?.getContext('2d');
-
-    if (roadCtx && cars) {
-      if (cars?.[carIds[0]]) {
-        if (cars?.[carIds[0]].position > window.screen.width / 2) {
-          roadRef.current?.scrollTo({ left: cars[carIds[0]].position - window.screen.width / 2, behavior: 'smooth' });
-        } else {
-          roadRef.current?.scrollTo({ left: 0 });
-        }
-      }
-    }
-  }, [cars, carIds]);
-
-  useEffect(() => {
-    initRoad();
-  }, [initRoad]);
-
   useEffect(() => {
     if (isRoadAssetsLoaded) {
       if (!cars) {
@@ -186,56 +128,16 @@ function RoadComponent({ newCars, carIds }: RoadProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newCars, isRoadAssetsLoaded]);
 
-  useEffect(() => {
-    correctFocusOnPlayerCar();
-  }, [correctFocusOnPlayerCar]);
-
   return (
-    <div>
+    <div className={cx(styles['road-container'])}>
       {isRoadAssetsLoaded ? (
-        <div className={cx(styles.road)} ref={roadRef}>
-          <canvas ref={canvasRoadRef} width={4000} height={264} className={cx(styles['road-canvas'])} />
-          {cars && (
-            <>
-              {carIds.map((id, i) => (
-                <div
-                  key={id}
-                  style={{
-                    transform: `translateX(${cars[id].position}px)`,
-                    top: `${cars[id].positionY}px`,
-                  }}
-                  className={cx(styles.car)}>
-                  {cars[id].effect && (
-                    <>
-                      {cars[id].effect === 'accelerated' && (
-                        <img
-                          src={speedGIF}
-                          alt="smoke"
-                          className={cx(styles['car-effect'], styles[`car-effect-${cars[id].effect}`])}
-                        />
-                      )}
-                      {cars[id].effect === 'shooted' && (
-                        <div>
-                          <img
-                            src={fireGIF}
-                            alt="smoke"
-                            className={cx(styles['car-effect'], styles[`car-effect-${cars[id].effect}-fire`])}
-                          />
-                          <img
-                            src={smokeGIF}
-                            alt="smoke"
-                            className={cx(styles['car-effect'], styles[`car-effect-${cars[id].effect}-smoke`])}
-                          />
-                        </div>
-                      )}
-                    </>
-                  )}
-                  {i === 0 ? <PlayerCarSVG /> : <ContractCarSVG />}
-                </div>
-              ))}
-            </>
+        <>
+          {isMobile ? (
+            <CanvasRoadMobile cars={cars} carIds={carIds} imagesCollection={imagesCollection.current} />
+          ) : (
+            <CanvasRoad cars={cars} carIds={carIds} imagesCollection={imagesCollection.current} />
           )}
-        </div>
+        </>
       ) : (
         <Loader />
       )}

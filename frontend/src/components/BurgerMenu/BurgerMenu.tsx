@@ -35,7 +35,7 @@ function BurgerMenu({ burgerMenuHandler }: BurgerMenuProps) {
         <div className={cx(styles['burger-menu-close-icon'])}>
           <Button variant="icon" label="" icon={closeMenuIcon} onClick={burgerMenuHandler} />
         </div>
-        <WalletInfo account={account} />
+        <WalletInfo account={account} withoutBalance />
       </div>
 
       <div className={cx(styles['burger-menu-body'])} />

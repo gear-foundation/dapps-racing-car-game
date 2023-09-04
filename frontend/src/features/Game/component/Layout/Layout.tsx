@@ -144,7 +144,7 @@ function LayoutComponent() {
           )}
           {currentGame.state === 'Finished' && (
             <div className={cx(styles['rewards-wrapper'])}>
-              <YourRewards rewards={defineRewards()} />
+              <YourRewards rewards="200" />
               <Button
                 variant="primary"
                 label="Play again"

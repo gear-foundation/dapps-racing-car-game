@@ -1,48 +1,25 @@
 @use '~styles/variables' as *;
 @use '~styles/mixins' as *;
 
-.road {
+.road-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  width: 100%;
-  height: 264px;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.02);
-}
 
-.roads-start {
-  height: 100%;
-  position: absolute;
-  left: 300px;
-}
+  @include md {
+    flex: 1;
 
-.road-canvas {
-  position: absolute;
-}
-
-.car {
-  position: absolute;
-  transition: all 1s;
-}
-
-.car-effect {
-  position: absolute;
-  z-index: -1;
-
-  &-shooted {
-    &-fire {
-      height: 84px;
-      transform: translate(-45px, -10px);
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0; 
+      bottom: 0;
+      box-shadow: 
+            inset 0px 20px 18px -10px #fff; 
+            z-index: 1;
     }
-
-    &-smoke {
-      height: 204px;
-      transform: translate(-38px, -78px);
-    }
-    
-  }
-
-  &-accelerated {
-    height: 50px;
-    transform: translateX(-150px);
   }
 }

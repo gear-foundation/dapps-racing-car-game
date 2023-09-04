@@ -53,30 +53,42 @@ function AppComponent() {
       {isAppReady ? (
         <>
           <Header />
-          <div className={cx(styles['main-content'])}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <MainPage />
-                  </ProtectedRoute>
-                }
-              />
 
-              <Route
-                path={`/${START}`}
-                element={
+          <Routes>
+            <Route
+              path="/*"
+              element={
+                <>
+                  <div className={cx(styles['main-content'])}>
+                    <Routes>
+                      <Route
+                        path="/"
+                        element={
+                          <ProtectedRoute>
+                            <MainPage />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route path={`/${NOT_AUTHORIZED}`} element={<NotAuthorizedPage />} />
+                      <Route path={`/${LOGIN}`} element={<LoginPage />} />
+                    </Routes>
+                  </div>
+                  <Footer />
+                </>
+              }
+            />
+
+            <Route
+              path={`/${START}`}
+              element={
+                <div className={cx(styles['main-content'])}>
                   <ProtectedRoute>
                     <GamePage />
                   </ProtectedRoute>
-                }
-              />
-              <Route path={`/${NOT_AUTHORIZED}`} element={<NotAuthorizedPage />} />
-              <Route path={`/${LOGIN}`} element={<LoginPage />} />
-            </Routes>
-          </div>
-          <Footer />
+                </div>
+              }
+            />
+          </Routes>
         </>
       ) : (
         <ApiLoader />

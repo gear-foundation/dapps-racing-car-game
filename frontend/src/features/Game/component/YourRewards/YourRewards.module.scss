@@ -10,6 +10,10 @@
   width: 380px;
   background: #F6F6F6;
   border-radius: 12px;
+
+  @include md {
+    padding: 0;
+  }
 }
 
 .btn {

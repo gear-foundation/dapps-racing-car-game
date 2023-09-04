@@ -12,7 +12,7 @@ import styles from './WalletInfo.module.scss';
 import { ScorePPV } from '@/features/ScoreBalance/components';
 import { useAccountAvailableBalance } from '../../hooks';
 
-function WalletInfo({ account }: WalletInfoProps) {
+function WalletInfo({ account, withoutBalance }: WalletInfoProps) {
   const address = useAtom(CONTRACT_ADDRESS_ATOM);
   const { availableBalance: balance, isAvailableBalanceReady } = useAccountAvailableBalance();
   const [isWalletModalOpen, setIsWalletModalOpen] = useState<boolean>(false);
@@ -32,11 +32,13 @@ function WalletInfo({ account }: WalletInfoProps) {
           <div className={cx(styles.score)}>
             <ScorePPV />
           </div>
-          <div className={cx(styles.balance)}>
-            <img src={coin} alt="wara coin" className={cx(styles['balance-coin-image'])} />
-            <div className={cx(styles['balance-value'])}>{balance?.value || '0'}</div>
-            <div className={cx(styles['balance-currency-name'])}>{account.balance.unit}</div>
-          </div>
+          {!withoutBalance && (
+            <div className={cx(styles.balance)}>
+              <img src={coin} alt="wara coin" className={cx(styles['balance-coin-image'])} />
+              <div className={cx(styles['balance-value'])}>{balance?.value || '0'}</div>
+              <div className={cx(styles['balance-currency-name'])}>{account.balance.unit}</div>
+            </div>
+          )}
           <button className={cx(styles.description)} onClick={handleOpenWalletModal}>
             {address && (
               <Identicon
