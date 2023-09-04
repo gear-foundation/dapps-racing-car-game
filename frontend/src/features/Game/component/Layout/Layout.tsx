@@ -10,10 +10,10 @@ import { Road } from '../Road';
 import { Button } from '@/ui';
 import accelerateSVG from '@/assets/icons/accelerate-icon.svg';
 import shootSVG from '@/assets/icons/shoot-icon.svg';
+import { ReactComponent as GearLogoIcon } from '@/assets/icons/gear-logo-icon.svg';
 import { CONFIG, CURRENT_GAME } from '@/atoms';
 import { usePlayerMoveMessage, useStartGameMessage } from '../../hooks';
-import { YourRewards } from '../YourRewards';
-import { Loader } from '@/components';
+import { Footer, Loader } from '@/components';
 import { WinStatus } from './Layout.interface';
 import { PLAY } from '@/App.routes';
 
@@ -144,13 +144,58 @@ function LayoutComponent() {
           )}
           {currentGame.state === 'Finished' && (
             <div className={cx(styles['rewards-wrapper'])}>
-              <YourRewards rewards="200" />
               <Button
                 variant="primary"
                 label="Play again"
+                size="large"
                 className={cx(styles.btn)}
                 onClick={() => handleStartNewGame(true)}
               />
+            </div>
+          )}
+          {currentGame.state === 'Finished' && (
+            <div className={cx(styles['footer-wrapper'])}>
+              <div className={styles.banner}>
+                <div className={styles.banner__right}>
+                  <h2 className={styles.banner__title}>
+                    Thank you for your interest <span>in the Vara Network.</span>
+                  </h2>
+                  <div className={styles.banner__text}>
+                    <p>You&apos;ve experienced a fully on-chain game.</p>
+                    <p>
+                      We look forward to having you join the ranks of developers shaping the new generation of
+                      decentralized applications.
+                    </p>
+                  </div>
+                </div>
+                <ul className={styles.banner__left}>
+                  <li className={styles.banner__item}>
+                    <div className={styles.banner__icon}>
+                      <GearLogoIcon width={24} height={24} />
+                    </div>
+                    <p className={styles['visit-block']}>
+                      Visit the{' '}
+                      <a href="https://wiki.gear-tech.io/" target="_blank" rel="noreferrer">
+                        Gear Wiki
+                      </a>{' '}
+                      to discover how easy it is to create programs using the Gear Protocol.
+                    </p>
+                  </li>
+                  <li className={styles.banner__item}>
+                    <div className={styles.banner__icon}>
+                      <GearLogoIcon width={24} height={24} />
+                    </div>
+                    <p className={styles['visit-block']}>
+                      Consider enrolling in a free course at{' '}
+                      <a href="https://academy.gear.foundation/" target="_blank" rel="noreferrer">
+                        Gear&nbsp;Academy
+                      </a>{' '}
+                      to become a top-notch Web3 developer.
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              <Footer />
             </div>
           )}
         </div>

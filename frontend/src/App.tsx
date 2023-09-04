@@ -2,19 +2,17 @@ import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
 import { useAccount, useApi } from '@gear-js/react-hooks';
-import { useAuthSync } from '@/features/Auth/hooks';
 import { GamePage, MainPage } from '@/pages';
 import { Header, Footer } from '@/components';
 import { withProviders } from '@/hocs';
 import { ScrollToTop, cx } from '@/utils';
-import { LOGIN, NOT_AUTHORIZED, START } from '@/App.routes';
+import { LOGIN, NOT_AUTHORIZED, PLAY, START } from '@/App.routes';
 import styles from './App.module.scss';
 import 'babel-polyfill';
 import { useLoginByParams, useProgramState } from './hooks';
 import { CONFIG, CURRENT_GAME, MSG_TO_GAME_ID, STRATEGY_IDS } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
 import { useAccountAvailableBalance, useAccountAvailableBalanceSync, useWalletSync } from './features/Wallet/hooks';
-import { useFTBalanceSync } from '@/features/ScoreBalance/hooks';
 import { LoginPage } from './pages/LoginPage';
 import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
 import { ApiLoader } from './components/ApiLoader';
@@ -43,8 +41,6 @@ function AppComponent() {
 
   useLoginByParams();
   useWalletSync();
-  useAuthSync();
-  useFTBalanceSync();
   useAccountAvailableBalanceSync();
 
   return (
@@ -56,13 +52,14 @@ function AppComponent() {
 
           <Routes>
             <Route
-              path="/*"
+              path="*"
               element={
                 <>
                   <div className={cx(styles['main-content'])}>
                     <Routes>
                       <Route
-                        path="/"
+                        index
+                        path={`/${PLAY}`}
                         element={
                           <ProtectedRoute>
                             <MainPage />

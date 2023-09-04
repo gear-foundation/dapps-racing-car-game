@@ -75,3 +75,12 @@
     @include square($size);
     border-radius: 50%;
   }
+
+  @mixin gap($value, $direction: bottom) {
+    $margin: 'margin-#{$direction}';
+  
+    > *:not(:last-child) {
+      #{$margin}: $value;
+    }
+  }
+  

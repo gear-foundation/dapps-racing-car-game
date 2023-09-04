@@ -8,7 +8,10 @@ export const WALLET_ID_LOCAL_STORAGE_KEY = 'wallet';
 
 export const WALLET = {
   enkrypt: { name: 'Enkrypt', SVG: EnkryptSVG },
-  'polkadot-js': { name: 'Polkadot JS', SVG: PolkadotSVG },
+  'polkadot-js': {
+    name: window?.walletExtension?.isNovaWallet ? 'Nova Wallet' : 'Polkadot JS',
+    SVG: (window as Window)?.walletExtension?.isNovaWallet ? EnkryptSVG : PolkadotSVG,
+  },
   'subwallet-js': { name: 'SubWallet', SVG: SubWalletSVG },
   talisman: { name: 'Talisman', SVG: TalismanSVG },
 };

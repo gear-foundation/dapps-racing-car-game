@@ -4,12 +4,11 @@ import { useAtom } from 'jotai';
 import { cx } from '@/utils';
 import { ADDRESS } from '@/consts';
 import { CONTRACT_ADDRESS_ATOM } from '@/atoms';
-import coin from '@/assets/icons/vara-coin-silver.png';
+import coin from '@/assets/icons/green_coin.svg';
 import { WalletInfoProps } from './WalletInfo.interfaces';
 import { Button } from '@/ui';
 import { WalletModal } from '../WalletModal';
 import styles from './WalletInfo.module.scss';
-import { ScorePPV } from '@/features/ScoreBalance/components';
 import { useAccountAvailableBalance } from '../../hooks';
 
 function WalletInfo({ account, withoutBalance }: WalletInfoProps) {
@@ -29,9 +28,6 @@ function WalletInfo({ account, withoutBalance }: WalletInfoProps) {
     <>
       {account && isAvailableBalanceReady ? (
         <div className={cx(styles['wallet-info'])}>
-          <div className={cx(styles.score)}>
-            <ScorePPV />
-          </div>
           {!withoutBalance && (
             <div className={cx(styles.balance)}>
               <img src={coin} alt="wara coin" className={cx(styles['balance-coin-image'])} />

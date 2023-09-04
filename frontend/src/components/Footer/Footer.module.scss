@@ -3,9 +3,8 @@
 
 .footer {
     position: relative;
-    height: 96px;
+    min-height: 96px;
     width: 100%;
-    background: theme-var($background-primary);
 }
 
 .container {
