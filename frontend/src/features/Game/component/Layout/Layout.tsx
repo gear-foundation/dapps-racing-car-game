@@ -52,7 +52,6 @@ function LayoutComponent() {
     sendPlayerMoveMessage(payload, {
       onError: () => {
         console.log('error');
-        console.log('fffffffffffffffff');
         setIsPlayerAction(true);
       },
     });

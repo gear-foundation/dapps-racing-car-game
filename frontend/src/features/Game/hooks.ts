@@ -3,13 +3,13 @@ import { useSendMessage } from '@gear-js/react-hooks';
 import { ADDRESS } from '@/consts';
 import { useProgramMetadata, useProgramState } from '@/hooks';
 import metaTxt from '@/assets/meta/meta.txt';
-import { Config, Game, StrategyIds } from '@/types';
+import { AllGames, Config, Game, StrategyIds } from '@/types';
 
 function usePlayerMoveMessage() {
   const meta = useProgramMetadata(metaTxt);
 
   return useSendMessage(ADDRESS.CONTRACT, meta, {
-    disableAlerts: true,
+    isMaxGasLimit: true,
   });
 }
 
@@ -42,6 +42,12 @@ function useStrategyIdsState() {
   const payload = useMemo(() => ({ StrategyIds: null }), []);
 
   return useProgramState<StrategyIds>(payload);
+}
+
+export function useAllGamesState() {
+  const payload = useMemo(() => ({ AllGames: null }), []);
+
+  return useProgramState<AllGames>(payload);
 }
 
 export { usePlayerMoveMessage, useStartGameMessage, useGameState, useConfigState, useStrategyIdsState };

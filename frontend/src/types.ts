@@ -54,6 +54,10 @@ export type Config = {
   Config: ConfigState;
 };
 
+export type AllGames = {
+  AllGames: GamesState;
+};
+
 export interface ProgramState {
   admin: HexString;
   strategyIds: string[];

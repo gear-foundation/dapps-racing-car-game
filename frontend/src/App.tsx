@@ -16,7 +16,7 @@ import { useAccountAvailableBalance, useAccountAvailableBalanceSync, useWalletSy
 import { LoginPage } from './pages/LoginPage';
 import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
 import { ApiLoader } from './components/ApiLoader';
-import { useConfigState, useGameState, useStrategyIdsState } from './features/Game/hooks';
+import { useAllGamesState, useConfigState, useGameState, useStrategyIdsState } from './features/Game/hooks';
 
 function AppComponent() {
   const { isApiReady } = useApi();
@@ -24,6 +24,7 @@ function AppComponent() {
   const { state: strategyIds } = useStrategyIdsState();
   const { state: config } = useConfigState();
   const { state: game } = useGameState(account?.decodedAddress);
+  const { state: games } = useAllGamesState();
   const { isAvailableBalanceReady } = useAccountAvailableBalance();
   const isStateRead = !!strategyIds && !!config && !!game;
 
@@ -32,12 +33,26 @@ function AppComponent() {
   const setConfig = useSetAtom(CONFIG);
 
   useEffect(() => {
-    if (strategyIds && game && config && isAccountReady && account && isStateRead) {
+    if (strategyIds && game && games && config && isAccountReady && account && isStateRead) {
       setStrategyIds(strategyIds.StrategyIds);
-      setCurrentGame(game.Game || null);
+
+      // setCurrentGame(game.Game);
+      setCurrentGame(games?.AllGames?.find((gamee) => gamee[0] === account?.decodedAddress)?.[1] || null);
+
       setConfig(config?.Config);
     }
-  }, [setStrategyIds, setCurrentGame, setConfig, account, isAccountReady, strategyIds, game, config, isStateRead]);
+  }, [
+    setStrategyIds,
+    setCurrentGame,
+    setConfig,
+    account,
+    isAccountReady,
+    strategyIds,
+    game,
+    config,
+    games,
+    isStateRead,
+  ]);
 
   const isAppReady = isApiReady && isAccountReady && isAvailableBalanceReady;
 
