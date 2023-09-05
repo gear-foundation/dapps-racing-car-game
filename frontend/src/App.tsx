@@ -9,35 +9,37 @@ import { ScrollToTop, cx } from '@/utils';
 import { LOGIN, NOT_AUTHORIZED, PLAY, START } from '@/App.routes';
 import styles from './App.module.scss';
 import 'babel-polyfill';
-import { useLoginByParams, useProgramState } from './hooks';
-import { CONFIG, CURRENT_GAME, MSG_TO_GAME_ID, STRATEGY_IDS } from './atoms';
+import { useLoginByParams } from './hooks';
+import { CONFIG, CURRENT_GAME, STRATEGY_IDS } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
 import { useAccountAvailableBalance, useAccountAvailableBalanceSync, useWalletSync } from './features/Wallet/hooks';
 import { LoginPage } from './pages/LoginPage';
 import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
 import { ApiLoader } from './components/ApiLoader';
+import { useConfigState, useGameState, useStrategyIdsState } from './features/Game/hooks';
 
 function AppComponent() {
   const { isApiReady } = useApi();
   const { isAccountReady, account } = useAccount();
-  const { state, isStateRead } = useProgramState();
+  const { state: strategyIds } = useStrategyIdsState();
+  const { state: config } = useConfigState();
+  const { state: game } = useGameState(account?.decodedAddress);
   const { isAvailableBalanceReady } = useAccountAvailableBalance();
+  const isStateRead = !!strategyIds && !!config && !!game;
 
   const setStrategyIds = useSetAtom(STRATEGY_IDS);
   const setCurrentGame = useSetAtom(CURRENT_GAME);
-  const setMsgToGameId = useSetAtom(MSG_TO_GAME_ID);
   const setConfig = useSetAtom(CONFIG);
 
   useEffect(() => {
-    if (state && isStateRead && isAccountReady && account) {
-      setStrategyIds(state.strategyIds);
-      setCurrentGame(state.games?.find((game) => game[0] === account?.decodedAddress)?.[1] || null);
-      setMsgToGameId(state.msgIdToGameId);
-      setConfig(state.config);
+    if (strategyIds && game && config && isAccountReady && account && isStateRead) {
+      setStrategyIds(strategyIds.StrategyIds);
+      setCurrentGame(game.Game || null);
+      setConfig(config?.Config);
     }
-  }, [state, isStateRead, setStrategyIds, setCurrentGame, setMsgToGameId, setConfig, account, isAccountReady]);
+  }, [setStrategyIds, setCurrentGame, setConfig, account, isAccountReady, strategyIds, game, config, isStateRead]);
 
-  const isAppReady = isApiReady && isAccountReady && isStateRead && isAvailableBalanceReady;
+  const isAppReady = isApiReady && isAccountReady && isAvailableBalanceReady;
 
   useLoginByParams();
   useWalletSync();

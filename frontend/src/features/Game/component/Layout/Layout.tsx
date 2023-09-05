@@ -52,6 +52,7 @@ function LayoutComponent() {
     sendPlayerMoveMessage(payload, {
       onError: () => {
         console.log('error');
+        console.log('fffffffffffffffff');
         setIsPlayerAction(true);
       },
     });
@@ -60,22 +61,6 @@ function LayoutComponent() {
   const defineWinStatus = (): WinStatus => {
     if (currentGame?.state === 'Finished') {
       return currentGame.result;
-    }
-
-    return null;
-  };
-
-  const defineRewards = (): string | null => {
-    if (currentGame?.state === 'Finished') {
-      if (defineWinStatus() === 'Win') {
-        return gameConfig!.tokensOnWin;
-      }
-      if (defineWinStatus() === 'Draw') {
-        return gameConfig!.tokensOnDraw;
-      }
-      if (defineWinStatus() === 'Lose') {
-        return gameConfig!.tokensOnLose;
-      }
     }
 
     return null;

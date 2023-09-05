@@ -42,6 +42,18 @@ export interface ConfigState {
   tokensOnLose: string;
 }
 
+export type StrategyIds = {
+  StrategyIds: string[];
+};
+
+export type Game = {
+  Game: GameState;
+};
+
+export type Config = {
+  Config: ConfigState;
+};
+
 export interface ProgramState {
   admin: HexString;
   strategyIds: string[];
@@ -50,8 +62,8 @@ export interface ProgramState {
   config: ConfigState;
 }
 
-export interface ProgramStateRes {
-  state?: ProgramState;
+export interface ProgramStateRes<T> {
+  state?: T;
   isStateRead: Boolean;
   error: string;
 }

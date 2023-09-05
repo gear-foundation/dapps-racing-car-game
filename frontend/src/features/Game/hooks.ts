@@ -1,19 +1,12 @@
 import { useMemo } from 'react';
 import { useSendMessage } from '@gear-js/react-hooks';
 import { ADDRESS } from '@/consts';
-import { useMetadata } from '@/hooks';
+import { useProgramMetadata, useProgramState } from '@/hooks';
 import metaTxt from '@/assets/meta/meta.txt';
-
-function useCreateStreamMetadata() {
-  const meta = useMetadata(metaTxt);
-
-  const memoizedMeta = useMemo(() => meta, [meta]);
-
-  return memoizedMeta;
-}
+import { Config, Game, StrategyIds } from '@/types';
 
 function usePlayerMoveMessage() {
-  const meta = useCreateStreamMetadata();
+  const meta = useProgramMetadata(metaTxt);
 
   return useSendMessage(ADDRESS.CONTRACT, meta, {
     disableAlerts: true,
@@ -21,11 +14,34 @@ function usePlayerMoveMessage() {
 }
 
 function useStartGameMessage() {
-  const meta = useCreateStreamMetadata();
+  const meta = useProgramMetadata(metaTxt);
 
   const message = useSendMessage(ADDRESS.CONTRACT, meta);
 
   return { meta, message };
 }
 
-export { usePlayerMoveMessage, useStartGameMessage };
+function useGameState(address?: string) {
+  const payload = useMemo(
+    () => ({
+      Game: { account_id: address },
+    }),
+    [address],
+  );
+
+  return useProgramState<Game>(payload);
+}
+
+function useConfigState() {
+  const payload = useMemo(() => ({ Config: null }), []);
+
+  return useProgramState<Config>(payload);
+}
+
+function useStrategyIdsState() {
+  const payload = useMemo(() => ({ StrategyIds: null }), []);
+
+  return useProgramState<StrategyIds>(payload);
+}
+
+export { usePlayerMoveMessage, useStartGameMessage, useGameState, useConfigState, useStrategyIdsState };

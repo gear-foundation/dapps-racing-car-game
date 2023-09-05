@@ -1,8 +1,9 @@
 import { useEffect, useState, MutableRefObject, RefObject, useCallback, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { ProgramMetadata, getProgramMetadata } from '@gear-js/api';
+import { ProgramMetadata, StateMetadata, getStateMetadata } from '@gear-js/api';
 import { useAccount, useAlert, useReadFullState } from '@gear-js/react-hooks';
 import { HexString } from '@polkadot/util/types';
+import { AnyJson } from '@polkadot/types/types';
 import { useAtom } from 'jotai';
 import metaTxt from '@/assets/meta/meta.txt';
 import { ACCOUNT_ID_LOCAL_STORAGE_KEY, ADDRESS, LOCAL_STORAGE, SEARCH_PARAMS } from '@/consts';
@@ -19,11 +20,12 @@ function useProgramMetadata(source: string) {
   useEffect(() => {
     fetch(source)
       .then((response) => response.text())
-      .then((raw) => `0x${raw}` as HexString)
-      .then((metaHex) => getProgramMetadata(metaHex))
+      .then((raw) => ProgramMetadata.from(`0x${raw}`))
       .then((result) => setMetadata(result))
       .catch(({ message }: Error) => alert.error(message));
-  }, [source, alert]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return metadata;
 }
@@ -69,17 +71,23 @@ function useClickOutside(handler: Handler, ...refs: (RefObject<HTMLElement> | Mu
   }, [refs, handler]);
 }
 
-function useMetadata(source: RequestInfo | URL) {
-  const [data, setData] = useState<ProgramMetadata>();
+function useStateMetadata(source: string) {
+  const alert = useAlert();
+
+  const [stateMetadata, setStateMetadata] = useState<StateMetadata>();
 
   useEffect(() => {
     fetch(source)
-      .then((res) => res.text() as Promise<string>)
-      .then((raw) => getProgramMetadata(`0x${raw}`))
-      .then((meta) => setData(meta));
-  }, [source]);
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) => Buffer.from(arrayBuffer))
+      .then((buffer) => getStateMetadata(buffer))
+      .then((result) => setStateMetadata(result))
+      .catch(({ message }: Error) => alert.error(message));
 
-  return data;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return stateMetadata;
 }
 
 function useMediaQuery(width: number) {
@@ -109,17 +117,17 @@ function useMediaQuery(width: number) {
   return targetReached;
 }
 
-function useProgramState() {
+function useProgramState<T>(payload?: AnyJson) {
   const programId = ADDRESS.CONTRACT;
   const meta = useProgramMetadata(metaTxt);
-  const state: ProgramStateRes = useReadFullState(programId, meta);
+  const state: ProgramStateRes<T> = useReadFullState(programId, meta, payload);
 
   return state;
 }
 
-function useReadState<T>({ programId, meta }: { programId?: HexString; meta: string }) {
+function useReadState<T>({ programId, meta, payload }: { programId?: HexString; meta: string; payload?: AnyJson }) {
   const metadata = useProgramMetadata(meta);
-  return useReadFullState<T>(programId, metadata);
+  return useReadFullState<T>(programId, metadata, payload);
 }
 
 export function useLoginByParams() {
@@ -159,7 +167,7 @@ export {
   useProgramMetadata,
   useContractAddressSetup,
   useClickOutside,
-  useMetadata,
+  useStateMetadata,
   useMediaQuery,
   useProgramState,
   useReadState,
