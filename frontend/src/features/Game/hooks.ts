@@ -10,13 +10,16 @@ function usePlayerMoveMessage() {
 
   return useSendMessage(ADDRESS.CONTRACT, meta, {
     isMaxGasLimit: true,
+    disableAlerts: true,
   });
 }
 
 function useStartGameMessage() {
   const meta = useProgramMetadata(metaTxt);
 
-  const message = useSendMessage(ADDRESS.CONTRACT, meta);
+  const message = useSendMessage(ADDRESS.CONTRACT, meta, {
+    isMaxGasLimit: true,
+  });
 
   return { meta, message };
 }
