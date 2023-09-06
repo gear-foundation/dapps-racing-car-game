@@ -27,12 +27,10 @@ export function useAuth() {
 
   const auth = async () => {
     const uuid = query.get('uuid');
-    console.log(uuid);
-    console.log('aaaaaaa');
+
     if (query.size && uuid && account) {
       try {
-        console.log('llllllllllllll');
-        const res = await fetchAuth<AuthResponse>('/api/user/auth', 'POST', {
+        const res = await fetchAuth<AuthResponse>('api/user/auth', 'POST', {
           coinbaseUID: uuid,
           substrate: account.decodedAddress,
         });
@@ -44,7 +42,6 @@ export function useAuth() {
         console.log(err);
       }
     }
-    console.log('bbbbbbbb');
     setIsAuthReady(true);
   };
 
@@ -61,7 +58,7 @@ function useAuthSync() {
     }
 
     auth();
-    console.log('fff');
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAccountReady]);
 }
