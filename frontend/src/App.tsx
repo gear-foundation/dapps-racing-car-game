@@ -6,7 +6,7 @@ import { GamePage, MainPage } from '@/pages';
 import { Header, Footer } from '@/components';
 import { withProviders } from '@/hocs';
 import { ScrollToTop, cx } from '@/utils';
-import { LOGIN, NOT_AUTHORIZED, PLAY, START } from '@/App.routes';
+import { LOGIN, PLAY, START } from '@/App.routes';
 import styles from './App.module.scss';
 import 'babel-polyfill';
 import { useLoginByParams } from './hooks';
@@ -14,9 +14,9 @@ import { CONFIG, CURRENT_GAME, STRATEGY_IDS } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
 import { useAccountAvailableBalance, useAccountAvailableBalanceSync, useWalletSync } from './features/Wallet/hooks';
 import { LoginPage } from './pages/LoginPage';
-import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
 import { ApiLoader } from './components/ApiLoader';
 import { useAllGamesState, useConfigState, useGameState, useStrategyIdsState } from './features/Game/hooks';
+import { useAuth, useAuthSync } from './features/Auth/hooks';
 
 function AppComponent() {
   const { isApiReady } = useApi();
@@ -26,6 +26,7 @@ function AppComponent() {
   const { state: game } = useGameState(account?.decodedAddress);
   const { state: games } = useAllGamesState();
   const { isAvailableBalanceReady } = useAccountAvailableBalance();
+  const { isAuthReady } = useAuth();
   const isStateRead = !!strategyIds && !!config && !!game;
 
   const setStrategyIds = useSetAtom(STRATEGY_IDS);
@@ -54,8 +55,9 @@ function AppComponent() {
     isStateRead,
   ]);
 
-  const isAppReady = isApiReady && isAccountReady && isAvailableBalanceReady;
+  const isAppReady = isApiReady && isAccountReady && isAvailableBalanceReady && isAuthReady;
 
+  useAuthSync();
   useLoginByParams();
   useWalletSync();
   useAccountAvailableBalanceSync();
@@ -83,7 +85,6 @@ function AppComponent() {
                           </ProtectedRoute>
                         }
                       />
-                      <Route path={`/${NOT_AUTHORIZED}`} element={<NotAuthorizedPage />} />
                       <Route path={`/${LOGIN}`} element={<LoginPage />} />
                     </Routes>
                   </div>

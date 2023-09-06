@@ -1,7 +1,7 @@
 import Identicon from '@polkadot/react-identicon';
 import { decodeAddress } from '@gear-js/api';
 import { useAccount, useAlert } from '@gear-js/react-hooks';
-import { Modal } from 'components';
+import { Modal } from '@/components';
 import { cx, copyToClipboard } from '@/utils';
 import copyToClipboardSVG from '@/assets/icons/binary-code.svg';
 import penEditSVG from '@/assets/icons/pen-edit-icon.svg';

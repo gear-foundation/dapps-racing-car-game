@@ -10,12 +10,12 @@ function TransactionModal({ fee, name, addressTo, addressFrom, onClose, onAbort,
       onAbort();
     }
 
-    onClose();
+    onClose?.();
   };
 
   const handleConfirm = () => {
     onConfirm();
-    onClose();
+    onClose?.();
   };
 
   return (

@@ -15,13 +15,9 @@ const post = (url: string, payload: AnyJson) =>
     body: JSON.stringify(payload),
   });
 
-const fetchAuth = <T>(url: string, method: string, token: string, payload?: AnyJson) =>
+const fetchAuth = <T>(url: string, method: string, payload?: AnyJson) =>
   fetch(`${API_URL}/${url}`, {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
     body: payload ? JSON.stringify(payload) : undefined,
   }).then(async (response) => {
     const json = await response.json();
