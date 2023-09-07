@@ -1,5 +1,5 @@
-import { useLocation } from 'react-router';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { useAccount, Account } from '@gear-js/react-hooks';
 import { useWallet } from '../Wallet/hooks';
@@ -9,13 +9,18 @@ import { CB_UUID_KEY } from './consts';
 import { AuthResponse } from './types';
 
 export function useAuth() {
-  const { search } = useLocation();
   const [isAuthReady, setIsAuthReady] = useAtom(IS_AUTH_READY_ATOM);
   const [userAddress, setIsUserAddress] = useAtom(USER_ADDRESS_ATOM);
-  const query = useMemo(() => new URLSearchParams(search), [search]);
+  const [query, setQuery] = useSearchParams();
 
   const { login, logout, account } = useAccount();
   const { resetWalletId } = useWallet();
+
+  const resetSearchQuery = () => {
+    query.delete('uuid');
+
+    setQuery(query);
+  };
 
   const signOut = () => {
     logout();
@@ -45,6 +50,8 @@ export function useAuth() {
         if (!res?.success) {
           setIsUserAddress(null);
         }
+
+        resetSearchQuery();
       } catch (err) {
         console.log(err);
       }
