@@ -18,8 +18,8 @@
     "types": "*"
   },
   "dependencies": {
-    "@gear-js/api": "0.33.0",
-    "@gear-js/react-hooks": "0.6.0",
+    "@gear-js/api": "0.33.1",
+    "@gear-js/react-hooks": "0.6.2",
     "@gear-js/ui": "^0.5.19",
     "@mantine/form": "^6.0.15",
     "@polkadot/api": "10.9.1",
