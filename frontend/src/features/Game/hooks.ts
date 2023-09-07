@@ -14,7 +14,7 @@ function usePlayerMoveMessage() {
 
   return useSendMessage(ADDRESS.CONTRACT, meta, {
     disableAlerts: true,
-    // isMaxGasLimit: true
+    isMaxGasLimit: true
   });
 }
 
