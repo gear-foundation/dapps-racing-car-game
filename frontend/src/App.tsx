@@ -31,6 +31,7 @@ function AppComponent() {
   const setConfig = useSetAtom(CONFIG);
 
   useEffect(() => {
+    console.log({ state });
     if (state && isStateRead && isAccountReady && account) {
       setStrategyIds(state.strategyIds);
       setCurrentGame(state.games?.find((game) => game[0] === account?.decodedAddress)?.[1] || null);
@@ -56,7 +57,7 @@ function AppComponent() {
           <div className={cx(styles['main-content'])}>
             <Routes>
               <Route
-                path="/"
+                path='/'
                 element={
                   <ProtectedRoute>
                     <MainPage />

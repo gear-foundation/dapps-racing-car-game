@@ -1,6 +1,6 @@
 import { useEffect, useState, MutableRefObject, RefObject, useCallback, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { ProgramMetadata, getProgramMetadata } from '@gear-js/api';
+import { ProgramMetadata } from '@gear-js/api';
 import { useAccount, useAlert, useReadFullState } from '@gear-js/react-hooks';
 import { HexString } from '@polkadot/util/types';
 import { useAtom } from 'jotai';
@@ -19,11 +19,12 @@ function useProgramMetadata(source: string) {
   useEffect(() => {
     fetch(source)
       .then((response) => response.text())
-      .then((raw) => `0x${raw}` as HexString)
-      .then((metaHex) => getProgramMetadata(metaHex))
+      .then((raw) => ProgramMetadata.from(`0x${raw}`))
       .then((result) => setMetadata(result))
       .catch(({ message }: Error) => alert.error(message));
-  }, [source, alert]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return metadata;
 }
@@ -75,7 +76,7 @@ function useMetadata(source: RequestInfo | URL) {
   useEffect(() => {
     fetch(source)
       .then((res) => res.text() as Promise<string>)
-      .then((raw) => getProgramMetadata(`0x${raw}`))
+      .then((raw) => ProgramMetadata.from(`0x${raw}`))
       .then((meta) => setData(meta));
   }, [source]);
 
@@ -112,14 +113,14 @@ function useMediaQuery(width: number) {
 function useProgramState() {
   const programId = ADDRESS.CONTRACT;
   const meta = useProgramMetadata(metaTxt);
-  const state: ProgramStateRes = useReadFullState(programId, meta);
+  const state: ProgramStateRes = useReadFullState(programId, meta, '0x');
 
   return state;
 }
 
 function useReadState<T>({ programId, meta }: { programId?: HexString; meta: string }) {
   const metadata = useProgramMetadata(meta);
-  return useReadFullState<T>(programId, metadata);
+  return useReadFullState<T>(programId, metadata, '0x');
 }
 
 export function useLoginByParams() {
