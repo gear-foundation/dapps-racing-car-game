@@ -11,7 +11,6 @@ function useCreateStreamMetadata() {
 
 function usePlayerMoveMessage() {
   const meta = useCreateStreamMetadata();
-
   return useSendMessage(ADDRESS.CONTRACT, meta, {
     disableAlerts: true,
     isMaxGasLimit: true
@@ -20,7 +19,10 @@ function usePlayerMoveMessage() {
 
 function useStartGameMessage() {
   const meta = useCreateStreamMetadata();
-  const message = useSendMessage(ADDRESS.CONTRACT, meta);
+  const message = useSendMessage(ADDRESS.CONTRACT, meta, {
+    disableAlerts: true,
+    isMaxGasLimit: true
+  });
   return { meta, message };
 }
 
