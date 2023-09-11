@@ -1,4 +1,4 @@
-import { LegacyRef, MutableRefObject, Ref, memo, useCallback, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, memo, useEffect, useRef, useState } from 'react';
 import { withoutCommas } from '@gear-js/react-hooks';
 import isEqual from 'lodash.isequal';
 import styles from './Road.module.scss';
@@ -11,13 +11,6 @@ import startVerticalSVG from '@/assets/icons/game-start-icon-vertical.svg';
 import finishVerticalSVG from '@/assets/icons/game-finish-icon-vertical.svg';
 import roadLineVerticalSVG from '@/assets/icons/road-line-vertical.svg';
 import sectionEndLineVerticalSVG from '@/assets/icons/section-end-line-vertical.svg';
-
-import { ReactComponent as PlayerCarSVG } from '@/assets/icons/player-car-icon.svg';
-import { ReactComponent as ContractCarSVG } from '@/assets/icons/contract-car-icon.svg';
-
-import smokeGIF from '@/assets/icons/smoke.gif';
-import fireGIF from '@/assets/icons/fire.gif';
-import speedGIF from '@/assets/icons/gif-speed.gif';
 import { CarEffect, CarsState, RoadProps } from './Road.interface';
 import { Cars } from '@/types';
 import { Loader } from '@/components';

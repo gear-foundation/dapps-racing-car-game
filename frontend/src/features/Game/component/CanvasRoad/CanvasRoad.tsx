@@ -1,5 +1,4 @@
-import { LegacyRef, MutableRefObject, Ref, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { withoutCommas } from '@gear-js/react-hooks';
+import { LegacyRef, Ref, memo, useCallback, useEffect, useRef } from 'react';
 import isEqual from 'lodash.isequal';
 import styles from './CanvasRoad.module.scss';
 import { cx } from '@/utils';

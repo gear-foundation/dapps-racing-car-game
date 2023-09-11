@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router';
 import Identicon from '@polkadot/react-identicon';
 import { decodeAddress } from '@gear-js/api';
 import { useAccount, useAlert } from '@gear-js/react-hooks';
@@ -15,9 +16,11 @@ import styles from './WalletModal.module.scss';
 import { Button } from '@/ui';
 import { WalletModalProps } from './WalletModal.interface';
 import { useAuth } from '@/features/Auth/hooks';
+import { PLAY } from '@/App.routes';
 
 function WalletModal({ onClose }: WalletModalProps) {
   const { extensions, account } = useAccount();
+  const navigate = useNavigate();
   const alert = useAlert();
   const { wallet, walletAccounts, setWalletId, resetWalletId, getWalletAccounts } = useWallet();
   const { signIn, signOut } = useAuth();
@@ -51,6 +54,7 @@ function WalletModal({ onClose }: WalletModalProps) {
 
       const handleClick = async () => {
         await signIn(_account);
+        navigate(PLAY);
         onClose();
       };
 
