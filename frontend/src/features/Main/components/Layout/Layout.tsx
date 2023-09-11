@@ -4,6 +4,8 @@ import { Button } from '@ui';
 import { CURRENT_GAME } from '@/atoms';
 import { START } from '@/App.routes';
 import { Welcome } from '@/features/Main/components';
+import styles from './Layout.module.scss';
+import { cx } from '@/utils';
 
 function Layout() {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ function Layout() {
         variant="primary"
         size="large"
         onClick={handleGoToPlay}
+        className={cx(styles['game-button'])}
       />
     </Welcome>
   );

@@ -11,7 +11,7 @@ import { WalletModal } from '../WalletModal';
 import styles from './WalletInfo.module.scss';
 import { useAccountAvailableBalance } from '../../hooks';
 
-function WalletInfo({ account, withoutBalance }: WalletInfoProps) {
+function WalletInfo({ account, withoutBalance, buttonClassName }: WalletInfoProps) {
   const address = useAtom(CONTRACT_ADDRESS_ATOM);
   const { availableBalance: balance, isAvailableBalanceReady } = useAccountAvailableBalance();
   const [isWalletModalOpen, setIsWalletModalOpen] = useState<boolean>(false);
@@ -48,7 +48,13 @@ function WalletInfo({ account, withoutBalance }: WalletInfoProps) {
           </button>
         </div>
       ) : (
-        <Button label="connect" variant="outline" onClick={handleOpenWalletModal} />
+        <Button
+          label="Connect Wallet"
+          variant="primary"
+          size="large"
+          onClick={handleOpenWalletModal}
+          className={cx(styles['connect-btn'], buttonClassName || '')}
+        />
       )}
       {isWalletModalOpen && <WalletModal onClose={handleCloseWalletModal} />}
     </>

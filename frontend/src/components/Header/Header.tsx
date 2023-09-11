@@ -36,6 +36,7 @@ function Header({ menu }: HeaderProps) {
         <div className={cx(styles.container)}>
           <Link to="/" className={cx(styles['logo-link'], !account ? styles['logo-link-centered'] : '')}>
             <img src={logo} alt="" />
+            <span className={cx(styles['post-logo'])}>Racing Car</span>
           </Link>
           {account && (
             <>
@@ -59,15 +60,15 @@ function Header({ menu }: HeaderProps) {
                         );
                       })}
                   </nav>
-                  <WalletInfo account={account} />
                 </>
               )}
             </>
           )}
+          {!isMobile && <WalletInfo account={account} buttonClassName={cx(styles['wallet-info-connect-btn'])} />}
           {account && isMobile && isAvailableBalanceReady && (
             <div className={cx(styles['menu-wrapper'])}>
               <div className={cx(styles.balance)}>
-                <img src={coin} alt="wara coin" className={cx(styles['balance-coin-image'])} />
+                <img src={coin} alt="vara coin" className={cx(styles['balance-coin-image'])} />
                 <div className={cx(styles['balance-value'])}>{balance?.value || '0'}</div>
                 <div className={cx(styles['balance-currency-name'])}>{account.balance.unit}</div>
               </div>
