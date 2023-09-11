@@ -1,20 +1,33 @@
-type SignInResponse = {
+export type SignInResponse = {
   accessToken: string;
   username: string;
 };
 
-type AuthResponse = {
+export type AuthResponse = {
   email: string;
   id: string;
   publicKey: string;
   username: string;
 };
 
-export type { SignInResponse, AuthResponse };
-
 export type ISignInError = {
   errors?: {
     message: string;
   };
   message?: string;
+};
+
+export type IApiError = {
+  code: number;
+  content: {
+    error: {}; // ??
+    errors: {
+      location: string; // "body"
+      msg: string; // "Please enter valid email"
+      path: string; // "email"
+      type: string; // "field"
+      value: string; // ""
+    }[];
+  };
+  message: string;
 };

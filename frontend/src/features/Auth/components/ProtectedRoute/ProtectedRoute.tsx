@@ -10,11 +10,11 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   const location = useLocation();
 
   if (!authToken && account) {
-    return <Navigate to={`/${NOT_AUTHORIZED}`} replace />;
+    return <Navigate to={NOT_AUTHORIZED} replace />;
   }
 
   if (!authToken) {
-    return <Navigate to={`/${LOGIN}`} state={{ from: location }} replace />;
+    return <Navigate to={LOGIN} state={{ from: location }} replace />;
   }
 
   return children;

@@ -15,6 +15,7 @@ import { usePlayerMoveMessage, useStartGameMessage } from '../../hooks';
 import { YourRewards } from '../YourRewards';
 import { Loader } from '@/components';
 import { WinStatus } from './Layout.interface';
+import { PLAY } from '@/App.routes';
 
 function LayoutComponent() {
   const [currentGame] = useAtom(CURRENT_GAME);
@@ -96,7 +97,7 @@ function LayoutComponent() {
           },
           onError: () => {
             console.log('error');
-            navigate('/');
+            navigate(PLAY, { replace: true });
           },
         });
       }

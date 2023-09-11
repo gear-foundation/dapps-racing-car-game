@@ -7,7 +7,7 @@ import { AUTH_MESSAGE, AUTH_TOKEN_LOCAL_STORAGE_KEY } from './consts';
 import { AUTH_TOKEN_ATOM, IS_AUTH_READY_ATOM, TESTNET_USERNAME_ATOM } from './atoms';
 import { fetchAuth, post } from './utils';
 import { AuthResponse, ISignInError, SignInResponse } from './types';
-import { NOT_AUTHORIZED, PLAY } from '@/App.routes';
+import { LOGIN, NOT_AUTHORIZED, PLAY } from '@/App.routes';
 
 function useAuth() {
   const { account, login, logout } = useAccount();
@@ -34,6 +34,7 @@ function useAuth() {
         data: AUTH_MESSAGE,
         type: 'bytes',
       });
+
       const res = await post('auth/login', {
         signature,
         publicKey: address,
@@ -42,19 +43,15 @@ function useAuth() {
 
       if (!res.ok) {
         const data: ISignInError = await res.json();
-
-        if (data.message) {
-          alert.error(data.message);
-        }
+        alert.error(data.message);
 
         setAuthToken(null);
         setTestnameUsername('');
         await login(account);
-        navigate(NOT_AUTHORIZED, { replace: true });
+        navigate(`/${NOT_AUTHORIZED}`, { replace: true });
       } else {
         const data: SignInResponse = await res.json();
         const { accessToken, username } = data;
-
         await login(account);
         setAuthToken(accessToken);
         setTestnameUsername(username || '');
@@ -68,6 +65,7 @@ function useAuth() {
   const signOut = () => {
     logout();
     setAuthToken(null);
+    navigate(LOGIN, { replace: true });
   };
 
   const auth = () => {
@@ -103,7 +101,7 @@ function useAuthSync() {
     if (!isAccountReady) return;
     auth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authToken]);
+  }, [isAccountReady]);
 
   useEffect(() => {
     if (!isAuthReady) return;
