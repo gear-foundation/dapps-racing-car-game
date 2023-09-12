@@ -97,7 +97,7 @@ function LayoutComponent() {
   return (
     <>
       {currentGame && account && gameConfig && !isLoading ? (
-        <div className={cx(styles.container)}>
+        <div className={cx(styles.container, currentGame.state !== 'Finished' ? styles['container-flexed'] : '')}>
           <Heading
             currentTurn={currentGame.currentRound}
             isPlayerAction={isPlayerAction}
@@ -136,6 +136,13 @@ function LayoutComponent() {
                 onClick={() => handleStartNewGame(true)}
               />
             </div>
+          )}
+          {currentGame.state !== 'Finished' && (
+            <>
+              <div className={cx(styles.footer)}>
+                <Footer />
+              </div>
+            </>
           )}
           {currentGame.state === 'Finished' && (
             <div className={cx(styles['footer-wrapper'])}>

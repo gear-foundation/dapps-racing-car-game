@@ -3,7 +3,11 @@
 
 .container {
   width: 100%;
-  padding-bottom: 80px;
+  
+  &-flexed {
+    display: flex;
+    flex-direction: column;
+  }
 
   @include md {
     padding-bottom: 0;
@@ -54,6 +58,16 @@
   }
 }
 
+.footer {
+  padding-top: 50px;
+  margin-top: auto;
+  width: 100%;
+
+  @include md {
+    display: none;
+  }
+}
+
 .rewards-wrapper {
   margin-top: 50px;
   display: flex;
@@ -71,7 +85,8 @@
 
 .btn {
   @include md {
-  width: 100%;
+    width: 100%;
+    z-index: 1;
   }
 }
 
@@ -103,7 +118,7 @@
   background-color: #000000;
   background-image: radial-gradient(63.92% 185.86% at 41.88% 70.03%, rgba(0, 255, 196, 0.2) 0%, rgba(0, 255, 196, 0) 100%);
   border-radius: 8px;
-  width: 1200px;
+  max-width: 1200px;
   margin: auto;
 
   @include md {
