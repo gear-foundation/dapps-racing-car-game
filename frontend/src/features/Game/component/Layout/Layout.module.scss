@@ -78,9 +78,9 @@
 .footer-wrapper {
   display: flex;
   position: absolute;
-  // transform: translateY(100%);
   flex-direction: column;
-  padding: 100px 20px;
+  padding: 160px 20px;
+  width: 100%;
 
   & > div:nth-child(2) {
     background: #00ffc4;
@@ -103,6 +103,8 @@
   background-color: #000000;
   background-image: radial-gradient(63.92% 185.86% at 41.88% 70.03%, rgba(0, 255, 196, 0.2) 0%, rgba(0, 255, 196, 0) 100%);
   border-radius: 8px;
+  width: 1200px;
+  margin: auto;
 
   @include md {
     display: flex;
@@ -110,6 +112,7 @@
     grid-gap: 0;
     padding: 16px;
     margin: auto;
+    width: auto;
   }
 
   &::before {
@@ -120,6 +123,7 @@
     right: 0;
     bottom: 0;
     z-index: -1;
+    width: 100%;
     background-color: #00ffc4;
   }
 
@@ -155,7 +159,7 @@
 
     @include md {
       font-size: 14px;
-      line-height: 19px
+      line-height: 19.6px
     }
   }
 
@@ -170,6 +174,7 @@
   .visit-block {
     @include md {
       font-size: 14px;
+      line-height: 19.6px;
     }
   }
 
@@ -182,6 +187,10 @@
     border-radius: 4px;
     font-size: 18px;
     line-height: 25px;
+
+    @include md {
+      padding: 16px;
+    }
 
     a {
       position: relative;
@@ -214,5 +223,10 @@
     border-radius: 50%;
     background-color: #00ffc4;
     color: #0b1114;
+
+    @include md {
+      padding: 4px;
+      align-self: start;
+    }
   }
 }
