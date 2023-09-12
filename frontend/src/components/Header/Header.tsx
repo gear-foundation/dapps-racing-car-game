@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Button, Link } from '@ui';
+import { Link } from '@ui';
 import { useAccount } from '@gear-js/react-hooks';
 import { cx } from '@/utils';
 import styles from './Header.module.scss';
 import logo from '@/assets/icons/logo-vara-black.svg';
 import { HeaderProps } from './Header.interfaces';
 import { useMediaQuery } from '@/hooks';
-import menuIcon from '@/assets/icons/burger-menu-icon.svg';
-import { BurgerMenu } from '../BurgerMenu/BurgerMenu';
 import { WalletInfo } from '@/features/Wallet/components/WalletInfo';
 import { useAccountAvailableBalance } from '@/features/Wallet/hooks';
 import coin from '@/assets/icons/green_coin.svg';
+import { MobileMenu } from '../MobileMenu';
 
 function Header({ menu }: HeaderProps) {
   const location = useLocation();
@@ -72,19 +71,11 @@ function Header({ menu }: HeaderProps) {
                 <div className={cx(styles['balance-value'])}>{balance?.value || '0'}</div>
                 <div className={cx(styles['balance-currency-name'])}>{account.balance.unit}</div>
               </div>
-              <div className={cx(styles['burger-menu-button'])}>
-                <Button label="" variant="icon" onClick={() => setIsMobileMenuOpen(true)} icon={menuIcon} />
-              </div>
+              {!!account && <MobileMenu />}
             </div>
           )}
         </div>
       </header>
-      {isMobileMenuOpen && (
-        <>
-          <div className={cx(styles['blur-background'])} />
-          <BurgerMenu burgerMenuHandler={burgerMenuHandler} />
-        </>
-      )}
     </>
   );
 }

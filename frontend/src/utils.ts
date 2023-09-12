@@ -51,6 +51,14 @@ export const copyToClipboard = async ({
   }
 };
 
+export const get = <T>(url: string) =>
+  fetch(url, {
+    method: 'GET',
+  }).then(async (res) => {
+    const json = await res.json();
+    return json as T;
+  });
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 

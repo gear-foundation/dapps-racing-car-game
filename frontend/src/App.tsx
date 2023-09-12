@@ -9,7 +9,7 @@ import { ScrollToTop, cx } from '@/utils';
 import { LOGIN, PLAY, START } from '@/App.routes';
 import styles from './App.module.scss';
 import 'babel-polyfill';
-import { useLoginByParams } from './hooks';
+import { useLoginByParams, useNodesSync } from './hooks';
 import { CONFIG, CURRENT_GAME, STRATEGY_IDS } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
 import { useAccountAvailableBalance, useAccountAvailableBalanceSync, useWalletSync } from './features/Wallet/hooks';
@@ -46,6 +46,7 @@ function AppComponent() {
   useAuthSync();
   useLoginByParams();
   useWalletSync();
+  useNodesSync();
   useAccountAvailableBalanceSync();
 
   return (
