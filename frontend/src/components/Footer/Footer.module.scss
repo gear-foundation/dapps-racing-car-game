@@ -31,7 +31,7 @@
 }
 
 .rigts {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400px;
     color: #4d4d4d;
 
@@ -57,7 +57,7 @@
 }
 
 .logo {
-    height: 50px;
+    height: 52px;
 
     @include md {
         grid-area: a;

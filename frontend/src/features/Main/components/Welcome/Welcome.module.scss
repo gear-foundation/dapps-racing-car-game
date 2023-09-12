@@ -42,7 +42,7 @@
         font-weight: 500;
     
         &-with-gradient {
-            background: linear-gradient(90deg, #2B2B2B 33.39%, #00FFC4 77.42%);
+            background: linear-gradient(90deg,#2b2b2b 33.39%,#00ffc4 77.42%);
             -webkit-background-clip: text;
             background-clip: text; 
             -webkit-text-fill-color: transparent;
@@ -53,6 +53,7 @@
         max-width: 370px;
         font-size: 18px;
         font-weight: 400;
+        line-height: 25.2px;
     }
 }
 

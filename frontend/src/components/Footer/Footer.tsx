@@ -8,24 +8,24 @@ import twitter from '@/assets/icons/twitter-icon.svg';
 
 const socials = [
   {
-    name: 'web',
-    url: '',
-    icon: web,
-  },
-  {
-    name: 'discord',
-    url: '',
-    icon: discord,
+    name: 'twitter',
+    url: 'https://twitter.com/gear_techs',
+    icon: twitter,
   },
   {
     name: 'git',
-    url: '',
+    url: 'https://github.com/gear-tech',
     icon: git,
   },
   {
-    name: 'twitter',
-    url: '',
-    icon: twitter,
+    name: 'discord',
+    url: 'https://discord.com/invite/7BQznC9uD9',
+    icon: discord,
+  },
+  {
+    name: 'web',
+    url: 'https://medium.com/@gear_techs',
+    icon: web,
   },
 ];
 
