@@ -4,7 +4,8 @@ import { useAtom } from 'jotai';
 import { cx } from '@/utils';
 import { ADDRESS } from '@/consts';
 import { CONTRACT_ADDRESS_ATOM } from '@/atoms';
-import coin from '@/assets/icons/green_coin.svg';
+import varaCoin from '@/assets/icons/vara-coin.svg';
+import tVaraCoin from '@/assets/icons/tvara-coin.svg';
 import { WalletInfoProps } from './WalletInfo.interfaces';
 import { Button } from '@/ui';
 import { WalletModal } from '../WalletModal';
@@ -30,7 +31,11 @@ function WalletInfo({ account, withoutBalance, buttonClassName }: WalletInfoProp
         <div className={cx(styles['wallet-info'])}>
           {!withoutBalance && (
             <div className={cx(styles.balance)}>
-              <img src={coin} alt="wara coin" className={cx(styles['balance-coin-image'])} />
+              <img
+                src={balance?.unit?.toLowerCase() === 'vara' ? varaCoin : tVaraCoin}
+                alt="vara coin"
+                className={cx(styles['balance-coin-image'])}
+              />
               <div className={cx(styles['balance-value'])}>{balance?.value || '0'}</div>
               <div className={cx(styles['balance-currency-name'])}>{account.balance.unit}</div>
             </div>
@@ -56,7 +61,7 @@ function WalletInfo({ account, withoutBalance, buttonClassName }: WalletInfoProp
           className={cx(styles['connect-btn'], buttonClassName || '')}
         />
       )}
-      {isWalletModalOpen && <WalletModal onClose={handleCloseWalletModal} />}
+      <WalletModal open={isWalletModalOpen} setOpen={setIsWalletModalOpen} onClose={handleCloseWalletModal} />
     </>
   );
 }

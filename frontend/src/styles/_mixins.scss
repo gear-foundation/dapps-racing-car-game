@@ -84,3 +84,7 @@
     }
   }
   
+  @mixin textOverflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }

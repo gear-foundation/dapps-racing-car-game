@@ -39,7 +39,9 @@ function BurgerMenu({ burgerMenuHandler }: BurgerMenuProps) {
       </div>
 
       <div className={cx(styles['burger-menu-body'])} />
-      {isWalletModalOpen && <WalletModal onClose={handleCloseWalletModal} />}
+      {isWalletModalOpen && (
+        <WalletModal open={isWalletModalOpen} setOpen={setIsWalletModalOpen} onClose={handleCloseWalletModal} />
+      )}
     </div>
   );
 }
