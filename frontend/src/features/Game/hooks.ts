@@ -1,9 +1,8 @@
-import { useMemo } from 'react';
 import { useSendMessage } from '@gear-js/react-hooks';
 import { ADDRESS } from '@/consts';
 import { useProgramMetadata, useProgramState } from '@/hooks';
 import metaTxt from '@/assets/meta/meta.txt';
-import { AllGames, Config, Game, StrategyIds } from '@/types';
+import { Config, GameState } from '@/types';
 
 function usePlayerMoveMessage() {
   const meta = useProgramMetadata(metaTxt);
@@ -24,33 +23,20 @@ function useStartGameMessage() {
   return { meta, message };
 }
 
-function useGameState(address?: string) {
-  const payload = useMemo(
-    () => ({
-      Game: { account_id: address },
-    }),
-    [address],
-  );
+function useGameState() {
+  const data = useProgramState<GameState>('game');
 
-  return useProgramState<Game>(payload);
+  if (data?.state && Object.keys(data.state)[0] === 'Game') {
+    return { ...data, state: { Game: null } };
+  }
+
+  return { ...data, state: { Game: data.state } };
 }
 
 function useConfigState() {
-  const payload = useMemo(() => ({ Config: null }), []);
+  const data = useProgramState<Config>('config');
 
-  return useProgramState<Config>(payload);
+  return { ...data, state: { Config: data.state } };
 }
 
-function useStrategyIdsState() {
-  const payload = useMemo(() => ({ StrategyIds: null }), []);
-
-  return useProgramState<StrategyIds>(payload);
-}
-
-export function useAllGamesState() {
-  const payload = useMemo(() => ({ AllGames: null }), []);
-
-  return useProgramState<AllGames>(payload);
-}
-
-export { usePlayerMoveMessage, useStartGameMessage, useGameState, useConfigState, useStrategyIdsState };
+export { usePlayerMoveMessage, useStartGameMessage, useGameState, useConfigState };

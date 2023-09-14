@@ -10,38 +10,30 @@ import { LOGIN, PLAY, START } from '@/App.routes';
 import styles from './App.module.scss';
 import 'babel-polyfill';
 import { useLoginByParams, useNodesSync } from './hooks';
-import { CONFIG, CURRENT_GAME, STRATEGY_IDS } from './atoms';
+import { CURRENT_GAME } from './atoms';
 import { ProtectedRoute } from './features/Auth/components';
 import { useAccountAvailableBalance, useAccountAvailableBalanceSync, useWalletSync } from './features/Wallet/hooks';
 import { LoginPage } from './pages/LoginPage';
 import { ApiLoader } from './components/ApiLoader';
-import { useConfigState, useGameState, useStrategyIdsState } from './features/Game/hooks';
+import { useGameState } from './features/Game/hooks';
 import { useAuth, useAuthSync } from './features/Auth/hooks';
 
 function AppComponent() {
   const { isApiReady } = useApi();
   const { isAccountReady, account } = useAccount();
-  const { state: strategyIds } = useStrategyIdsState();
-  const { state: config } = useConfigState();
-  const { state: game } = useGameState(account?.decodedAddress);
+  const { state: game } = useGameState();
   const { isAvailableBalanceReady } = useAccountAvailableBalance();
   const { isAuthReady } = useAuth();
-  const isStateRead = !!strategyIds && !!config && !!game;
-  const setStrategyIds = useSetAtom(STRATEGY_IDS);
+  const isStateRead = !!game;
   const setCurrentGame = useSetAtom(CURRENT_GAME);
-  const setConfig = useSetAtom(CONFIG);
 
   useEffect(() => {
-    if (strategyIds && game && config && isAccountReady && account && isStateRead) {
-      setStrategyIds(strategyIds.StrategyIds);
-
+    if (game && isAccountReady && account && isStateRead) {
       setCurrentGame(game.Game);
-
-      setConfig(config?.Config);
     }
-  }, [setStrategyIds, setCurrentGame, setConfig, account, isAccountReady, strategyIds, game, config, isStateRead]);
+  }, [setCurrentGame, account, isAccountReady, game, isStateRead]);
 
-  const isAppReady = isApiReady && isAccountReady && isAvailableBalanceReady && isAuthReady;
+  const isAppReady = isApiReady && isAccountReady && isAvailableBalanceReady && isAuthReady && isStateRead;
 
   useAuthSync();
   useLoginByParams();

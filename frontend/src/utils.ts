@@ -59,7 +59,7 @@ export const get = <T>(url: string) =>
     return json as T;
   });
 
-function ScrollToTop() {
+export function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -72,4 +72,4 @@ function ScrollToTop() {
   return null;
 }
 
-export { ScrollToTop };
+export const withoutCommas = (value: string) => (typeof value === 'string' ? value.replace(/,/g, '') : value);

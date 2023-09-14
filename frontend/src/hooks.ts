@@ -1,7 +1,7 @@
 import { useEffect, useState, MutableRefObject, RefObject, useCallback, useMemo } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { ProgramMetadata, StateMetadata, getStateMetadata } from '@gear-js/api';
-import { useAccount, useAlert, useReadFullState } from '@gear-js/react-hooks';
+import { ProgramMetadata, StateMetadata, getStateMetadata, MessagesDispatched } from '@gear-js/api';
+import { useAccount, useAlert, useApi, useReadFullState } from '@gear-js/react-hooks';
 import { HexString } from '@polkadot/util/types';
 import { AnyJson } from '@polkadot/types/types';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
@@ -12,6 +12,84 @@ import { CONTRACT_ADDRESS_ATOM, nodesAtom } from '@/atoms';
 import { WALLET_ID_LOCAL_STORAGE_KEY } from './features/Wallet/consts';
 import { AUTH_TOKEN_LOCAL_STORAGE_KEY } from './features/Auth/consts';
 import { get } from './utils';
+
+const postState = async (stateName: any, body: AnyJson) =>
+  fetch(`https://state-machine.vara-network.io/state/races/${stateName}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    body: JSON.stringify(body),
+  });
+
+function useReadStateFromApi<T = AnyJson>(
+  programId: HexString | undefined,
+  meta: ProgramMetadata | undefined,
+  payload: AnyJson = '0x',
+  isReadOnError?: boolean,
+) {
+  const { api } = useApi();
+  const alert = useAlert();
+  const { account } = useAccount();
+
+  const [state, setState] = useState<T>();
+  const [isStateRead, setIsStateRead] = useState(true);
+  const [error, setError] = useState('');
+
+  const isPayload = payload !== undefined;
+
+  const readStateFromApi = async (isInitLoad?: boolean) => {
+    if (!account) return;
+
+    if (isInitLoad) setIsStateRead(false);
+
+    try {
+      const res = await postState(payload, {
+        address: account?.decodedAddress,
+      });
+
+      const data = await res.json();
+
+      setState(data as T);
+      if (!isReadOnError) setIsStateRead(true);
+    } catch ({ message }: any) {
+      setError(message as any);
+    } finally {
+      if (isReadOnError) setIsStateRead(true);
+    }
+  };
+
+  const handleStateChange = async ({ data }: MessagesDispatched) => {
+    const changedIDs = data.stateChanges.toHuman() as HexString[];
+    const isAnyChange = changedIDs.some((id) => id === programId);
+
+    if (isAnyChange) {
+      readStateFromApi();
+    }
+  };
+
+  useEffect(() => {
+    if (!api || !programId || !meta || !isPayload) return;
+
+    const unsub = api.gearEvents.subscribeToGearEvent('MessagesDispatched', handleStateChange);
+
+    return () => {
+      unsub.then((unsubCallback) => unsubCallback());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [api, programId, meta, payload, account]);
+
+  useEffect(() => {
+    readStateFromApi(true);
+    setError('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [api, programId, meta, payload, account]);
+
+  useEffect(() => {
+    if (error) alert.error(error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
+
+  return { state, isStateRead, error };
+}
 
 export function useProgramMetadata(source: string) {
   const alert = useAlert();
@@ -124,7 +202,7 @@ export function useMediaQuery(width: number) {
 export function useProgramState<T>(payload?: AnyJson) {
   const programId = ADDRESS.CONTRACT;
   const meta = useProgramMetadata(metaTxt);
-  const state: ProgramStateRes<T> = useReadFullState(programId, meta, payload);
+  const state: ProgramStateRes<T> = useReadStateFromApi(programId, meta, payload);
 
   return state;
 }
@@ -139,7 +217,7 @@ export function useReadState<T>({
   payload?: AnyJson;
 }) {
   const metadata = useProgramMetadata(meta);
-  return useReadFullState<T>(programId, metadata, payload);
+  return useReadStateFromApi<T>(programId, metadata, payload);
 }
 
 export function useLoginByParams() {

@@ -1,8 +1,7 @@
 import { MutableRefObject, memo, useEffect, useRef, useState } from 'react';
-import { withoutCommas } from '@gear-js/react-hooks';
 import isEqual from 'lodash.isequal';
 import styles from './Road.module.scss';
-import { cx } from '@/utils';
+import { cx, withoutCommas } from '@/utils';
 import startSVG from '@/assets/icons/game-start-icon.svg';
 import finishSVG from '@/assets/icons/game-finish-icon.svg';
 import roadLineSVG from '@/assets/icons/road-line-svg.svg';
@@ -57,11 +56,11 @@ function RoadComponent({ newCars, carIds }: RoadProps) {
 
   const defineCarEffect = (roundResult: Record<string, string> | null): CarEffect => {
     if (roundResult) {
-      if (Object.keys(roundResult)[0] === 'SlowedDown') {
+      if (Object.keys(roundResult)[0] === 'slowedDown') {
         return 'shooted';
       }
 
-      if (Object.keys(roundResult)[0] === 'Accelerated') {
+      if (Object.keys(roundResult)[0] === 'accelerated') {
         return 'accelerated';
       }
     }
@@ -72,7 +71,7 @@ function RoadComponent({ newCars, carIds }: RoadProps) {
   const initCars = () => {
     const carPositionsY = [108, 30, 185];
 
-    const carsToState: CarsState = carIds.reduce(
+    const carsToState: CarsState = carIds?.reduce(
       (acc, id, i) => ({
         ...acc,
         [id]: {

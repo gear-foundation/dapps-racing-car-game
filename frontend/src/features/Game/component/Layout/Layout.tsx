@@ -11,7 +11,7 @@ import { Button } from '@/ui';
 import accelerateSVG from '@/assets/icons/accelerate-icon.svg';
 import shootSVG from '@/assets/icons/shoot-icon.svg';
 import { ReactComponent as GearLogoIcon } from '@/assets/icons/gear-logo-icon.svg';
-import { CONFIG, CURRENT_GAME } from '@/atoms';
+import { CURRENT_GAME } from '@/atoms';
 import { usePlayerMoveMessage, useStartGameMessage } from '../../hooks';
 import { Footer, Loader } from '@/components';
 import { WinStatus } from './Layout.interface';
@@ -19,7 +19,6 @@ import { PLAY } from '@/App.routes';
 
 function LayoutComponent() {
   const [currentGame] = useAtom(CURRENT_GAME);
-  const [gameConfig] = useAtom(CONFIG);
   const [isPlayerAction, setIsPlayerAction] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { account } = useAccount();
@@ -96,7 +95,7 @@ function LayoutComponent() {
 
   return (
     <>
-      {currentGame && account && gameConfig && !isLoading ? (
+      {currentGame && account && !isLoading ? (
         <div className={cx(styles.container, currentGame.state !== 'Finished' ? styles['container-flexed'] : '')}>
           <Heading
             currentTurn={currentGame.currentRound}

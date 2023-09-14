@@ -29,7 +29,7 @@ export interface GameState {
   currentRound: string;
 }
 
-export type CurrentGameState = GameState;
+export type CurrentGameState = { state: { Game: GameState }; isStateRead: boolean; error: any };
 
 export interface MsgIdToGameIdState {}
 
@@ -47,7 +47,7 @@ export type StrategyIds = {
 };
 
 export type Game = {
-  Game: GameState;
+  Game: GameState | null;
 };
 
 export type Config = {
