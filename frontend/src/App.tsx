@@ -1,52 +1,27 @@
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { useSetAtom } from 'jotai';
+import {  useNavigate } from 'react-router-dom';
 import { useAccount, useApi } from '@gear-js/react-hooks';
-import { useAuthSync } from '@/features/Auth/hooks';
-import { GamePage, MainPage } from '@/pages';
 import { Header, Footer } from '@/components';
 import { withProviders } from '@/hocs';
 import { ScrollToTop, cx } from '@/utils';
-import { LOGIN, NOT_AUTHORIZED, START } from '@/App.routes';
 import styles from './App.module.scss';
 import 'babel-polyfill';
-import { useLoginByParams, useProgramState } from './hooks';
-import { CONFIG, CURRENT_GAME, MSG_TO_GAME_ID, STRATEGY_IDS } from './atoms';
-import { ProtectedRoute } from './features/Auth/components';
-import { useAccountAvailableBalance, useAccountAvailableBalanceSync, useWalletSync } from './features/Wallet/hooks';
-import { useFTBalanceSync } from '@/features/ScoreBalance/hooks';
-import { LoginPage } from './pages/LoginPage';
-import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
 import { ApiLoader } from './components/ApiLoader';
 import { StayTuned } from '@/pages/stay-tuned';
 
 function AppComponent() {
   const { isApiReady } = useApi();
-  const { isAccountReady, account } = useAccount();
-  const { state, isStateRead } = useProgramState();
-  const { isAvailableBalanceReady } = useAccountAvailableBalance();
-
-  const setStrategyIds = useSetAtom(STRATEGY_IDS);
-  const setCurrentGame = useSetAtom(CURRENT_GAME);
-  const setMsgToGameId = useSetAtom(MSG_TO_GAME_ID);
-  const setConfig = useSetAtom(CONFIG);
+  const { isAccountReady, account, logout } = useAccount();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (state && isStateRead && isAccountReady && account) {
-      setStrategyIds(state.strategyIds);
-      setCurrentGame(state.games?.find((game) => game[0] === account?.decodedAddress)?.[1] || null);
-      setMsgToGameId(state.msgIdToGameId);
-      setConfig(state.config);
+    if (account) {
+      navigate('/');
+      logout();
     }
-  }, [state, isStateRead, setStrategyIds, setCurrentGame, setMsgToGameId, setConfig, account, isAccountReady]);
+  }, [account, logout, navigate]);
 
-  const isAppReady = isApiReady && isAccountReady && isStateRead && isAvailableBalanceReady;
-
-  useLoginByParams();
-  useWalletSync();
-  useAuthSync();
-  useFTBalanceSync();
-  useAccountAvailableBalanceSync();
+  const isAppReady = isApiReady && isAccountReady;
 
   return (
     <div className={cx(styles['app-container'])}>
