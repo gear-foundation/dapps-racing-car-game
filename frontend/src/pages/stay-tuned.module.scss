@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+  max-width: 680px;
+  margin: auto;
+  text-align: center;
+
+  font-size: 20px;
+  line-height: 28px;
+
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

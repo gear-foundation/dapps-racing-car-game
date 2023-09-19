@@ -18,6 +18,7 @@ import { useFTBalanceSync } from '@/features/ScoreBalance/hooks';
 import { LoginPage } from './pages/LoginPage';
 import { NotAuthorizedPage } from './pages/NotAuthorizedPage';
 import { ApiLoader } from './components/ApiLoader';
+import { StayTuned } from '@/pages/stay-tuned';
 
 function AppComponent() {
   const { isApiReady } = useApi();
@@ -54,27 +55,7 @@ function AppComponent() {
         <>
           <Header />
           <div className={cx(styles['main-content'])}>
-            <Routes>
-              <Route
-                path='/'
-                element={
-                  <ProtectedRoute>
-                    <MainPage />
-                  </ProtectedRoute>
-                }
-              />
-
-              <Route
-                path={`/${START}`}
-                element={
-                  <ProtectedRoute>
-                    <GamePage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path={`/${NOT_AUTHORIZED}`} element={<NotAuthorizedPage />} />
-              <Route path={`/${LOGIN}`} element={<LoginPage />} />
-            </Routes>
+            <StayTuned />
           </div>
           <Footer />
         </>
